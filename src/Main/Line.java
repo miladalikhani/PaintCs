@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class Line extends Shape {
-    Line (String name, Point point1, Point point2, Color border, int priority) {
-        super (name, new Point ((point1.x + point2.x) / 2, (point1.y + point2.y) / 2), border, null, priority);
-        this.setA (Math.abs(point1.x - point2.x));
+    Line(String name, Point point1, Point point2, Color border, int priority) {
+        super(name, new Point ((point1.x + point2.x) / 2, (point1.y + point2.y) / 2), border, null, priority);
+        this.setA(Math.abs(point1.x - point2.x));
         this.setB(Math.abs(point1.y - point2.y));
     }
 
@@ -28,18 +28,10 @@ public class Line extends Shape {
     public void Move(Point2D newLocation) {
         double DeltaX = newLocation.getX() - this.getLocation().getX();
         double DeltaY = newLocation.getY() - this.getLocation().getY();
-        this.setLocation (newLocation);
-        this.setPoint1 (new Point2D.Double (DeltaX + this.getPoint1().getX(), DeltaY + this.getPoint1().getY()));
-        this.setPoint2 (new Point2D.Double(DeltaX + this.getPoint2().getX(), DeltaY + this.getPoint2().getY()));
+        this.setLocation(newLocation);
+        this.setPoint1(new Point2D.Double(DeltaX + this.getPoint1().getX(), DeltaY + this.getPoint1().getY()));
+        this.setPoint2(new Point2D.Double(DeltaX + this.getPoint2().getX(), DeltaY + this.getPoint2().getY()));
     }
-
-    @Override
-    public void ChangeBorder(Color newBorder) {
-        this.setBorder(newBorder);
-    }
-
-    @Override
-    public void ChangeFill(Color newFill) {}
 
     @Override
     public void Rotate(double angle) {
