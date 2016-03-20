@@ -1,14 +1,12 @@
 package Validation;
 
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by milad on 3/18/16.
+ * Created by milad on 3/21/16.
  */
+public class Main {
 
-public class TestMain {
     public static void main(String[] args) {
         Doer tmp1 = new Doer();
         OperatorsHandler validator = new OperatorsHandler(tmp1);
@@ -24,6 +22,4 @@ public class TestMain {
             System.out.println(validator.validateStatement());
         }
     }
-
 }
-
