@@ -1,10 +1,13 @@
 package Main;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Dot extends Shape {
-    Dot (String name, Point location, Color border, int priority) {
+    Dot (String name, Point2D location, Color border, int priority) {
         super(name, location, border, null, priority);
+        this.setA(3);
+        this.setB(3);
     }
 
     @Override
@@ -16,7 +19,7 @@ public class Dot extends Shape {
     public void ChangeFill(Color newFill) {}
 
     @Override
-    public void Move(Point newLocation) {
+    public void Move(Point2D newLocation) {
         this.setLocation(newLocation);
     }
 

@@ -1,9 +1,10 @@
 package Main;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public abstract class Shape {
-    protected Point Location;
+    protected Point2D Location;
     protected Color Border;
     protected Color Fill;
     protected double A, B;
@@ -11,7 +12,7 @@ public abstract class Shape {
     protected double Angle;
     protected int Priority;
 
-    public Shape (String name, Point location, Color border, Color fill, int priority) {
+    public Shape (String name, Point2D location, Color border, Color fill, int priority) {
         this.Name = name;
         this.Location = location;
         this.Border = border;
@@ -42,9 +43,9 @@ public abstract class Shape {
 
     public void setB (double b) { B = b; }
 
-    public Point getLocation() { return Location; }
+    public Point2D getLocation() { return Location; }
 
-    public void setLocation (Point location) { Location = location; }
+    public void setLocation (Point2D location) { Location = location; }
 
     public String getName() { return Name; }
 
@@ -54,7 +55,7 @@ public abstract class Shape {
 
     public void setPriority (int priority) { Priority = priority; }
 
-    public abstract void Move (Point newLocation);
+    public abstract void Move (Point2D newLocation);
 
     public abstract void Scale (double k);
 
