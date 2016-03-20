@@ -8,6 +8,8 @@ public class Dot extends Shape {
         super(name, location, border, null, priority);
         this.setA(3);
         this.setB(3);
+        this.Point.add (location);
+        this.N = 1;
     }
 
     @Override
@@ -21,6 +23,8 @@ public class Dot extends Shape {
     @Override
     public void Move(Point2D newLocation) {
         this.setLocation(newLocation);
+        this.Point.remove(0);
+        this.Point.add(newLocation);
     }
 
     @Override

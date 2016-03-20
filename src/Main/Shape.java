@@ -2,9 +2,12 @@ package Main;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public abstract class Shape {
     protected Point2D Location;
+    protected ArrayList<Point2D> Point = new ArrayList<>();
+    protected int N;
     protected Color Border;
     protected Color Fill;
     protected double A, B;
@@ -21,6 +24,7 @@ public abstract class Shape {
         this.A = 0;
         this.B = 0;
         this.Angle = 0;
+        this.N = 0;
     }
 
     public Color getBorder() { return Border; }

@@ -4,21 +4,25 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class Line extends Shape {
-    private Point2D Point1, Point2;
-
     Line (String name, Point point1, Point point2, Color border, int priority) {
         super (name, new Point ((point1.x + point2.x) / 2, (point1.y + point2.y) / 2), border, null, priority);
         this.setA (Math.abs(point1.x - point2.x));
         this.setB(Math.abs(point1.y - point2.y));
     }
 
-    public Point2D getPoint1() { return Point1; }
+    public Point2D getPoint1() { return this.Point.get(0); }
 
-    public void setPoint1(Point2D point1) { Point1 = point1; }
+    public void setPoint1(Point2D point1) {
+        this.Point.remove(0);
+        this.Point.add(0, point1);
+    }
 
-    public Point2D getPoint2() { return Point2; }
+    public Point2D getPoint2() { return this.Point.get(1); }
 
-    public void setPoint2(Point2D point2) { Point2 = point2; }
+    public void setPoint2(Point2D point2) {
+        this.Point.remove(1);
+        this.Point.add(point2);
+    }
 
     @Override
     public void Move(Point2D newLocation) {
@@ -26,7 +30,7 @@ public class Line extends Shape {
         double DeltaY = newLocation.getY() - this.getLocation().getY();
         this.setLocation (newLocation);
         this.setPoint1 (new Point2D.Double (DeltaX + this.getPoint1().getX(), DeltaY + this.getPoint1().getY()));
-        this.setPoint2(new Point2D.Double(DeltaX + this.getPoint2().getX(), DeltaY + this.getPoint2().getY()));
+        this.setPoint2 (new Point2D.Double(DeltaX + this.getPoint2().getX(), DeltaY + this.getPoint2().getY()));
     }
 
     @Override
