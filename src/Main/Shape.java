@@ -9,12 +9,14 @@ public abstract class Shape {
     protected double A, B;
     protected String Name;
     protected double Angle;
+    protected int Priority;
 
-    public Shape (String name, Point location, Color border, Color fill) {
+    public Shape (String name, Point location, Color border, Color fill, int priority) {
         this.Name = name;
         this.Location = location;
         this.Border = border;
         this.Fill = fill;
+        this.Priority = priority;
         this.A = 0;
         this.B = 0;
         this.Angle = 0;
@@ -48,9 +50,17 @@ public abstract class Shape {
 
     public void setName (String name) { Name = name; }
 
+    public int getPriority () { return Priority; }
+
+    public void setPriority (int priority) { Priority = priority; }
+
     public abstract void Move (Point newLocation);
+
     public abstract void Scale (double k);
+
     public abstract void ChangeBorder (Color newBorder);
+
     public abstract void ChangeFill (Color newFill);
+
     public abstract void Rotate (double angle);
 }
