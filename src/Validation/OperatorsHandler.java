@@ -27,7 +27,7 @@ public class OperatorsHandler {
     {
          /*
             0 -> operation eror
-            1 -> error in number of input
+            1 -> error in number of input argumant;
             2 -> hexaDecimal Format error
             3 -> decimal format error
             6,7 -> drawPoint
@@ -36,6 +36,20 @@ public class OperatorsHandler {
             12,13 -> draw Rectangle
             14,15 -> draw Triangel
             16,17 -> draw Polygon
+            18 -> delete shape
+            19 -> scale
+            20 -> rotate
+            21 -> locate
+            22 -> cut
+            23 -> copy
+            24 -> paste
+            25 -> add to group
+            26 -> delete from group
+            27 -> disband
+            28 -> change border color
+            29 -> change fill color
+            30 -> float format error
+
          */
         if ( parts.size() == 0 )
         {
@@ -45,7 +59,94 @@ public class OperatorsHandler {
         {
             switch (parts.get(0))
             {
-                return 0;
+                case "add":
+                    ArrayList<String> shapeInfo = new ArrayList<>(parts);
+                    shapeInfo.remove(0);
+                    return validateSemanticInAdd(shapeInfo);
+                case "delete":
+                    if ( parts.size() == 2 )
+                        return 18;
+                    return 1;
+                case "scale":
+                    if ( parts.size() == 3)
+                    {
+                        if ( !isFloat(parts.get(2)) )
+                            return 30;
+                        return 19;
+                    }
+                    return 1;
+                case "rotate":
+                    if ( parts.size() == 3)
+                    {
+                        if ( !isInteger(parts.get(2)) )
+                            return 3;
+                        return 20;
+                    }
+                    return 1;
+                case "locate":
+                    if ( parts.size() == 4)
+                    {
+                        if ( !isInteger(parts.get(2)) || !isInteger(parts.get(3)) )
+                            return 3;
+                        return 21;
+                    }
+                    return 1;
+                case "cut":
+                    if ( parts.size() == 2)
+                    {
+                        return 22;
+                    }
+                    return 1;
+                case "copy":
+                    if ( parts.size() == 2)
+                    {
+                        return 23;
+                    }
+                    return 1;
+                case "paste":
+                    if ( parts.size() == 3)
+                    {
+                        if ( !isInteger(parts.get(1)) || !isInteger(parts.get(2)) )
+                            return 3;
+                        return 24;
+                    }
+                    return 1;
+                case "addToGroup":
+                    if ( parts.size() >= 3)
+                    {
+                        return 25;
+                    }
+                    return 1;
+                case "deleteFromGroup":
+                    if ( parts.size() == 3)
+                    {
+                        return 26;
+                    }
+                    return 1;
+                case "disband":
+                    if ( parts.size() == 2)
+                    {
+                        return 27;
+                    }
+                    return 1;
+                case "changeBorderColor":
+                    if ( parts.size() == 3)
+                    {
+                        if ( !isHex(parts.get(2)) )
+                            return 2;
+                        return 28;
+                    }
+                    return 1;
+                case "changeFillColor":
+                    if ( parts.size() == 3)
+                    {
+                        if ( !isHex(parts.get(2))  )
+                            return 2;
+                        return 29;
+                    }
+                    return 1;
+                default:
+                    return 0;
             }
         }
     }
@@ -238,6 +339,17 @@ public class OperatorsHandler {
         }
         if( s.length() != 6)
             return false;
+        return true;
+    }
+
+    private boolean isFloat(String s) {
+        try {
+            Double.parseDouble(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
         return true;
     }
 

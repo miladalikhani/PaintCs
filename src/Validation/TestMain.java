@@ -21,7 +21,7 @@ public class TestMain {
                 return;
             validator.set(tmp);
             System.out.println(validator.getParts());
-            System.out.println(validator.validateSemanticInAdd());
+            System.out.println(validator.validateStatement());
         }
     }
 
