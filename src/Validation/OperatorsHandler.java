@@ -26,15 +26,15 @@ public class OperatorsHandler {
     public int validateStatement ()
     {
          /*
-            0 -> operation eror
-            1 -> error in number of input argumant;
-            2 -> hexaDecimal Format error
+            0 -> operation error
+            1 -> error in number of input argument;
+            2 -> hexDecimal Format error
             3 -> decimal format error
             6,7 -> drawPoint
             8,9 -> drawLine
             10,11 -> draw Circle
             12,13 -> draw Rectangle
-            14,15 -> draw Triangel
+            14,15 -> draw Triangle
             16,17 -> draw Polygon
             18 -> delete shape
             19 -> scale
@@ -49,6 +49,7 @@ public class OperatorsHandler {
             28 -> change border color
             29 -> change fill color
             30 -> float format error
+            31 -> set priority
 
          */
         if ( parts.size() == 0 )
@@ -129,7 +130,7 @@ public class OperatorsHandler {
                         return 27;
                     }
                     return 1;
-                case "changeBorderColor":
+                case "changeBorder":
                     if ( parts.size() == 3)
                     {
                         if ( !isHex(parts.get(2)) )
@@ -143,6 +144,14 @@ public class OperatorsHandler {
                         if ( !isHex(parts.get(2))  )
                             return 2;
                         return 29;
+                    }
+                    return 1;
+                case "priority":
+                    if ( parts.size() == 3 )
+                    {
+                        if ( !isInteger(parts.get(2)) )
+                            return 3;
+                        return 31;
                     }
                     return 1;
                 default:
