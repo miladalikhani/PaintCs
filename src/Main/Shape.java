@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public abstract class Shape {
+
     protected Point2D Location;
     protected ArrayList<Point2D> Point = new ArrayList<>();
     protected Color Border;
