@@ -10,7 +10,7 @@ public class OperatorsHandler {
     private String operation;
     private ArrayList<String> parts;
 
-    OperatorsHandler()
+    public OperatorsHandler()
     {
         parts = new ArrayList<>();
     }

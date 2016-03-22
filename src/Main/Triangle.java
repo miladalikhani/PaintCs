@@ -3,7 +3,7 @@ package Main;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class Triangle extends Shape {
+public abstract class Triangle extends Shape {
     Triangle(String name, Point2D point1, Point2D point2, Point2D point3, Color border, Color fill, int priority) {
         super(name, new Point2D.Double((point1.getX() + point2.getX() + point3.getX()) / 3, (point1.getY() + point2.getY() + point3.getY()) / 3) {}, border, fill, priority);
         this.Point.add(point1);

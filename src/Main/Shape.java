@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public abstract class Shape {
+public abstract class Shape implements Comparable<Shape> {
     protected Point2D Location;
     protected ArrayList<Point2D> Point = new ArrayList<>();
     protected int N;
@@ -68,4 +68,18 @@ public abstract class Shape {
     public abstract void ChangeFill (Color newFill);
 
     public abstract void Rotate (double angle);
+
+    public static int compare ( Shape a , Shape b )
+    {
+        if ( a.getPriority() > b.getPriority() )
+            return 1;
+        else if ( a.getPriority() < b.getPriority() )
+            return -1;
+        return 0;
+    }
+
+    @Override
+    public int compareTo(Shape shape) {
+        return Shape.compare(this , shape);
+    }
 }

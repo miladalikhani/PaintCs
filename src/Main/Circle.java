@@ -3,7 +3,7 @@ package Main;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class Circle extends Shape {
+public abstract class Circle extends Shape {
     private double Radius;
 
     Circle(String name, Point2D location, double radius, Color border, Color fill, int priority) {
