@@ -1,16 +1,24 @@
 package Main;
 
 import java.awt.*;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class Triangle extends Shape {
+    private ArrayList<Point2D> Point = new ArrayList<>();
+
     Triangle(String name, Point2D point1, Point2D point2, Point2D point3, Color border, Color fill, int priority) {
         super(name, new Point2D.Double((point1.getX() + point2.getX() + point3.getX()) / 3, (point1.getY() + point2.getY() + point3.getY()) / 3) {}, border, fill, priority);
-        this.Point.add(point1);
-        this.Point.add(point2);
-        this.Point.add(point3);
-        //A = ?;
-        //B = ?
+        Point.add(point1);
+        Point.add(point2);
+        Point.add(point3);
+        Point.add(point1);
+        this.awtShape = new GeneralPath();
+        ((GeneralPath) this.awtShape).moveTo(point1.getX(), point1.getY());
+        for (int i = 1; i < this.Point.size(); i++) {
+            ((GeneralPath) this.awtShape).lineTo(this.Point.get(i).getX(), this.Point.get(i).getY());
+        }
     }
 
     @Override
@@ -42,7 +50,5 @@ public class Triangle extends Shape {
             Y = k * Y;
             this.Point.get(i).setLocation(X, Y);
         }
-        this.setA(this.getA() * k);
-        this.setB(this.getB() * k);
     }
 }
