@@ -8,22 +8,21 @@ import java.util.ArrayList;
 
 public class OperatorsHandler {
     private String operation;
-    private Doer worker;
     private ArrayList<String> parts;
 
-    OperatorsHandler( Doer worker)
+    OperatorsHandler()
     {
-        this.worker = worker;
         parts = new ArrayList<>();
     }
 
-    public void set ( String operation )
+    public int readAndValidate ( String operation )
     {
         this.operation = operation;
         parseStatement();
+        return validateStatement();
     }
 
-    public int validateStatement ()
+    private int validateStatement ()
     {
          /*
             0 -> operation error
@@ -160,7 +159,7 @@ public class OperatorsHandler {
         }
     }
 
-    public int validateSemanticInAdd ( ArrayList<String> parts ) // FIXME: 3/21/16 parts should start with shape name
+    private int validateSemanticInAdd ( ArrayList<String> parts ) // FIXME: 3/21/16 parts should start with shape name
     {
         /*
             0 -> operation eror
@@ -306,7 +305,7 @@ public class OperatorsHandler {
         }
     }
 
-    public ArrayList<String> getParts() {
+    private ArrayList<String> getParts() {
         return parts;
     }
 
