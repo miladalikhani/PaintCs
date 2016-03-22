@@ -17,38 +17,42 @@ public class Triangle extends Shape {
         this.awtShape = new GeneralPath();
         ((GeneralPath) this.awtShape).moveTo(point1.getX(), point1.getY());
         for (int i = 1; i < this.Point.size(); i++) {
-            ((GeneralPath) this.awtShape).lineTo(this.Point.get(i).getX(), this.Point.get(i).getY());
+            ((GeneralPath) this.awtShape).lineTo(this.Point.get(i).getX(), Point.get(i).getY());
         }
     }
 
     @Override
-    public void Move(Point2D newLocation) {
-        for (int i = 0; i < this.Point.size(); i++) {
-            double X = this.Point.get(i).getX() - this.getLocation().getX();
-            double Y = this.Point.get(i).getY() - this.getLocation().getY();
-            this.Point.get(i).setLocation(X + newLocation.getX(), Y + newLocation.getY());
-        }
+    public void Move(Point2D newLocation) { //TODO: Graphics, Change Point
         this.setLocation(newLocation);
     }
 
     @Override
-    public void Rotate(double angle) {
-        this.setAngle(this.getAngle() + angle);
-        for (int i = 0; i < this.Point.size(); i++) {
-            double X = this.Point.get(i).getX() - this.getLocation().getX();
-            double Y = this.Point.get(i).getY() - this.getLocation().getY();
-            this.Point.get(i).setLocation(X * Math.cos(angle) - Y * Math.sin(angle) + this.getLocation().getX(), X * Math.sin(angle) + Y * Math.cos(angle) + this.getLocation().getY());
-        }
+    public void Rotate(double angle) { //TODO: Graphics, Change Point
     }
 
     @Override
-    public void Scale(double k) {
-        for (int i = 0; i < this.Point.size(); i++) {
-            double X = this.Point.get(i).getX() - this.getLocation().getX();
-            double Y = this.Point.get(i).getY() - this.getLocation().getY();
-            X = k * X;
-            Y = k * Y;
-            this.Point.get(i).setLocation(X, Y);
+    public void Scale(double k) { //TODO: Graphics, Change Point
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D G2d = ((Graphics2D) g);
+        G2d.setPaint(Fill);
+        G2d.fill(awtShape);
+        G2d.setPaint(Border);
+        G2d.draw(awtShape);
+    }
+
+    @Override
+    public boolean includes(Point2D point) {
+        double X1, Y1, X2, Y2;
+        for (int i = 0; i < 2; i++) {
+            X1 = Point.get(i + 1).getX() - Point.get(i).getX();
+            Y1 = Point.get(i + 1).getY() - Point.get(i).getY();
+            X2 = Point.get(i).getX() - point.getX();
+            Y2 = Point.get(i).getY() - point.getY();
+            if (X1 * Y2 > X2 * Y1) return false;
         }
+        return true;
     }
 }

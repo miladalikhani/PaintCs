@@ -29,4 +29,15 @@ public class Circle extends Shape {
     public void Move(Point2D newLocation) {
 
     }
+
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D G2d = ((Graphics2D) g);
+        G2d.setPaint(Fill);
+        G2d.fill(awtShape);
+        G2d.setPaint(Border);
+        G2d.draw(awtShape);
+    }
+
+    //TODO: Override "include" method
 }

@@ -1,9 +1,10 @@
 package Main;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class Group extends Shape {
+public class Group extends Shape { //TODO: this.setLocation(?);
     private ArrayList<Shape> Shape = new ArrayList<>();
 
     Group(String name, Shape shape) {
@@ -51,6 +52,13 @@ public class Group extends Shape {
             X = k * X;
             Y = k * Y;
             this.getShape(i).Move(new Point2D.Double(X, Y));
+        }
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        for (int i = 0; i < this.Shape.size(); i++) {
+            this.getShape(i).draw(g);
         }
     }
 }

@@ -36,17 +36,39 @@ public class Polygon extends Shape {
     void setRadius(double radius) { this.Radius = radius; }
 
     @Override
-    public void Move(Point2D newLocation) {
+    public void Move(Point2D newLocation) { //TODO: Graphics, Change xPoint & yPoint
         this.setLocation(newLocation);
     }
 
     @Override
-    public void Scale(double k) {
+    public void Scale(double k) { //TODO: Graphics, Change xPoint & yPoint
         this.setRadius(this.getRadius() * k);
     }
 
     @Override
-    public void Rotate(double angle) {
+    public void Rotate(double angle) { //TODO: Graphics, Change xPoint & yPoint
         this.setAngle(this.getAngle() + angle);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D G2d = ((Graphics2D) g);
+        G2d.setPaint(Fill);
+        G2d.fill(awtShape);
+        G2d.setPaint(Border);
+        G2d.draw(awtShape);
+    }
+
+    @Override
+    public boolean includes(Point2D point) {
+        double X1, Y1, X2, Y2;
+        for (int i = 0; i < 2; i++) {
+            X1 = xPoint[i + 1] - xPoint[i];
+            Y1 = yPoint[i + 1] - yPoint[i];
+            X2 = xPoint[i] - point.getX();
+            Y2 = yPoint[i] - point.getY();
+            if (X1 * Y2 > X2 * Y1) return false;
+        }
+        return true;
     }
 }

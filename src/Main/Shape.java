@@ -71,4 +71,8 @@ public abstract class Shape implements Comparable<Shape> {
     public int compareTo(Shape shape) {
         return Shape.compare(this, shape);
     }
+
+    public abstract void draw(Graphics g);
+
+    public boolean includes(Point2D point) { return false; }
 }

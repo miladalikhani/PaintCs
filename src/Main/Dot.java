@@ -28,4 +28,13 @@ public class Dot extends Shape {
 
     @Override
     public void Scale(double k) {}
+
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D G2d = ((Graphics2D) g);
+        G2d.setPaint(Border);
+        G2d.draw(awtShape);
+    }
+
+    //TODO: Override "includes" method
 }
