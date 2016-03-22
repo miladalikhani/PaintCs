@@ -63,9 +63,9 @@ public abstract class Shape implements Comparable<Shape> {
 
     public abstract void Scale (double k);
 
-    public abstract void ChangeBorder (Color newBorder);
+    public void ChangeBorder (Color newBorder) { this.setBorder(newBorder); }
 
-    public abstract void ChangeFill (Color newFill);
+    public void ChangeFill (Color newFill) { this.setFill(newFill); }
 
     public abstract void Rotate (double angle);
 

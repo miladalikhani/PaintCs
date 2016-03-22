@@ -3,7 +3,7 @@ package Main;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public abstract class Rectangle extends Shape {
+public class Rectangle extends Shape {
     Rectangle(String name, Point2D location, double a, double b, Color border, Color fill, int priority) {
         super(name, location, border, fill, priority);
         this.setA(a);

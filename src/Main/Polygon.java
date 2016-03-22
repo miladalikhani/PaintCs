@@ -3,7 +3,7 @@ package Main;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public abstract class Polygon extends Shape {
+public class Polygon extends Shape {
     private int N;
     private double Length;
     private double Radius;

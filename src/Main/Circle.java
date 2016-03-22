@@ -3,7 +3,7 @@ package Main;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public abstract class Circle extends Shape {
+public class Circle extends Shape {
     private double Radius;
 
     Circle(String name, Point2D location, double radius, Color border, Color fill, int priority) {
@@ -25,4 +25,7 @@ public abstract class Circle extends Shape {
 
     @Override
     public void Rotate(double angle) {}
+
+    @Override
+    public void Move(Point2D newLocation) { this.setLocation(newLocation); }
 }
