@@ -18,31 +18,22 @@ import org.omg.CORBA.CODESET_INCOMPATIBLE;
  */
 public class Main extends JFrame {
     public Surface surface;
-    public Components shapes;
-    public Main ( Components newComp )
-    {
-        this.shapes = new Components();
-        surface = new Surface();
-        add(surface);
-        setTitle("PaintCS");
-        setSize(1300, 1000);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+    public Components shapes = new Components();
     public Main() {
-        shapes = new Components();
         surface = new Surface();
         add(surface);
         setTitle("PaintCS");
         setSize(1300, 1000);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        surface.setVisible(true);
     }
 
     public static void main(String[] args) throws FileNotFoundException {
         Main main = new Main();
         File file = new File("input/ex1.txt");
         OperatorsHandler validator = new OperatorsHandler();
+        main.setVisible(true);
         Scanner input = new Scanner(file);
         int cnt = 1;
         while ( input.hasNext() ) {
@@ -137,15 +128,6 @@ public class Main extends JFrame {
                     break;
             }
         }
-        Main test = new Main( main.shapes );
-        test.surface.addShape(new Group( new Circle("test2" , 400, 100 ,67 , "234576" , "ff3300",2)));
-        test.surface.addShape(new Group( new Circle("test" , 100,200,30,"111111" , "234567" , 1)));
-        //test.surface.setShapes(main.shapes.getGroups());
-        System.out.println(main.shapes);
-        System.out.println(test.surface);
-        test.setVisible(true);
-       // main.surface.setShapes(new Group( new Line("tes" , 10 , 20 , 30 , 40 , "121314" , 1)));
-        //main.surface.repaint();
     }
     private static int readNextLine ( Scanner input , OperatorsHandler validator)
     {

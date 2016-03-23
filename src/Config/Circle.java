@@ -48,7 +48,6 @@ public class Circle extends Shape {
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
-        G2d.dispose();
     }
 
     @Override

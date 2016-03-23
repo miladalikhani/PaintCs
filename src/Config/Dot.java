@@ -40,7 +40,6 @@ public class Dot extends Shape {
         Graphics2D G2d = ((Graphics2D) g);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
-        G2d.dispose();
     }
 
     @Override
