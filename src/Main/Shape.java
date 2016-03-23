@@ -9,7 +9,6 @@ public abstract class Shape implements Comparable<Shape> {
     protected Color Border;
     protected Color Fill;
     protected String Name;
-    protected double Angle;
     protected int Priority;
     protected java.awt.Shape awtShape;
 
@@ -19,7 +18,6 @@ public abstract class Shape implements Comparable<Shape> {
         Border = border;
         Fill = fill;
         Priority = priority;
-        Angle = 0;
     }
 
     public java.awt.Shape getAwtShape() { return awtShape; }
@@ -31,10 +29,6 @@ public abstract class Shape implements Comparable<Shape> {
     public Color getFill() { return Fill; }
 
     public void setFill (Color fill) { Fill = fill; }
-
-    public double getAngle() { return Angle; }
-
-    public void setAngle (double angle) { Angle = angle; }
 
     public Point2D getLocation() { return Location; }
 
@@ -48,15 +42,17 @@ public abstract class Shape implements Comparable<Shape> {
 
     public void setPriority (int priority) { Priority = priority; }
 
-    public abstract void Move (Point2D newLocation);
+    public abstract void move (Point2D dR, Graphics g);
 
-    public abstract void Scale (double k);
+    public abstract void moveTo (Point2D newLocation, Graphics g);
 
-    public void ChangeBorder (Color newBorder) { this.setBorder(newBorder); }
+    public abstract void scale (double k, Graphics g);
 
-    public void ChangeFill (Color newFill) { this.setFill(newFill); }
+    public void changeBorder (Color newBorder) { this.setBorder(newBorder); }
 
-    public abstract void Rotate (double angle);
+    public void changeFill (Color newFill) { this.setFill(newFill); }
+
+    public abstract void rotate (double angle, Graphics g);
 
     public static int compare (Shape a, Shape b)
     {

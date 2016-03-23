@@ -1,37 +1,62 @@
 package Main;
 
 import java.awt.*;
+import java.awt.Polygon;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Triangle extends Shape {
-    private ArrayList<Point2D> Point = new ArrayList<>();
+    private int[] xPoint;
+    private int[] yPoint;
 
     Triangle(String name, Point2D point1, Point2D point2, Point2D point3, Color border, Color fill, int priority) {
         super(name, new Point2D.Double((point1.getX() + point2.getX() + point3.getX()) / 3, (point1.getY() + point2.getY() + point3.getY()) / 3) {}, border, fill, priority);
-        Point.add(point1);
-        Point.add(point2);
-        Point.add(point3);
-        Point.add(point1);
+        xPoint[0] = ((int) point1.getX());
+        xPoint[1] = ((int) point2.getX());
+        xPoint[2] = ((int) point3.getX());
+        yPoint[0] = ((int) point1.getY());
+        yPoint[1] = ((int) point2.getY());
+        yPoint[2] = ((int) point3.getY());
         this.awtShape = new GeneralPath();
-        ((GeneralPath) this.awtShape).moveTo(point1.getX(), point1.getY());
-        for (int i = 1; i < this.Point.size(); i++) {
-            ((GeneralPath) this.awtShape).lineTo(this.Point.get(i).getX(), Point.get(i).getY());
+        this.awtShape = new Polygon(xPoint, yPoint, 3);
+    }
+
+    @Override
+    public void move(Point2D dR, Graphics g) {
+        ((Polygon) this.awtShape).translate(((int) dR.getX()), ((int) dR.getY()));
+        xPoint = ((Polygon) this.awtShape).xpoints;
+        yPoint = ((Polygon) this.awtShape).ypoints;
+        this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
+        draw(g);
+    }
+
+    @Override
+    public void moveTo(Point2D newLocation, Graphics g) {
+        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
+    }
+
+    @Override
+    public void rotate(double angle, Graphics g) {
+        double X, Y;
+        for (int i = 0; i < 3; i++) {
+            X = xPoint[i] - this.getLocation().getX();
+            Y = yPoint[i] - this.getLocation().getY();
+            xPoint[i] = ((int) (this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180)));
+            yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
         }
+        this.awtShape = new Polygon(xPoint, yPoint, 3);
+        draw(g);
     }
 
     @Override
-    public void Move(Point2D newLocation) { //TODO: Graphics, Change Point
-        this.setLocation(newLocation);
-    }
-
-    @Override
-    public void Rotate(double angle) { //TODO: Graphics, Change Point
-    }
-
-    @Override
-    public void Scale(double k) { //TODO: Graphics, Change Point
+    public void scale(double k, Graphics g) {
+        for (int i = 0; i < 3; i++) {
+            xPoint[i] = ((int) (this.getLocation().getX() + (xPoint[i] - this.getLocation().getX()) * k));
+            yPoint[i] = ((int) (this.getLocation().getY() + (yPoint[i] - this.getLocation().getY()) * k));
+        }
+        this.awtShape = new Polygon(xPoint, yPoint, 3);
+        draw(g);
     }
 
     @Override
@@ -45,14 +70,6 @@ public class Triangle extends Shape {
 
     @Override
     public boolean includes(Point2D point) {
-        double X1, Y1, X2, Y2;
-        for (int i = 0; i < 2; i++) {
-            X1 = Point.get(i + 1).getX() - Point.get(i).getX();
-            Y1 = Point.get(i + 1).getY() - Point.get(i).getY();
-            X2 = Point.get(i).getX() - point.getX();
-            Y2 = Point.get(i).getY() - point.getY();
-            if (X1 * Y2 > X2 * Y1) return false;
-        }
-        return true;
+        return this.awtShape.contains(point);
     }
 }

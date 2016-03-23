@@ -11,30 +11,36 @@ public class Dot extends Shape {
     }
 
     @Override
-    public void ChangeBorder(Color newBorder) {
-        this.setBorder(newBorder);
+    public void changeFill(Color newFill) {}
+
+    @Override
+    public void move(Point2D dR, Graphics g) {
+        setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
+        this.awtShape = new Line2D.Double(this.getLocation().getX(), this.getLocation().getY(), this.getLocation().getX(), this.getLocation().getY());
+        draw(g);
     }
 
     @Override
-    public void ChangeFill(Color newFill) {}
+    public void rotate(double angle, Graphics g) {}
 
     @Override
-    public void Move(Point2D newLocation) {
-        this.setLocation(newLocation);
+    public void scale(double k, Graphics g) {}
+
+    @Override
+    public void moveTo(Point2D newLocation, Graphics g) {
+        move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
     }
-
-    @Override
-    public void Rotate(double angle) {}
-
-    @Override
-    public void Scale(double k) {}
 
     @Override
     public void draw(Graphics g) {
         Graphics2D G2d = ((Graphics2D) g);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
+        G2d.dispose();
     }
 
-    //TODO: Override "includes" method
+    @Override
+    public boolean includes(Point2D point) {
+        return this.getLocation().distance(point) <= 3;
+    }
 }

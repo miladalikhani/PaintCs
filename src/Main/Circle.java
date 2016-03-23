@@ -18,16 +18,27 @@ public class Circle extends Shape {
     public void setRadius(double radius) { Radius = radius; }
 
     @Override
-    public void Scale(double k) {
+    public void scale(double k, Graphics g) {
         this.setRadius(this.getRadius() * k);
+        this.awtShape = new Ellipse2D.Double(this.getLocation().getX() - Radius, this.getLocation().getY() - Radius, 2 * Radius, 2 * Radius);
+        draw(g);
     }
 
     @Override
-    public void Rotate(double angle) {}
+    public void rotate(double angle, Graphics g) {
+        draw(g);
+    }
 
     @Override
-    public void Move(Point2D newLocation) {
+    public void move(Point2D dR, Graphics g) {
+        this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
+        this.awtShape = new Ellipse2D.Double(this.getLocation().getX() - Radius, this.getLocation().getY() - Radius, 2 * Radius, 2 * Radius);
+        draw(g);
+    }
 
+    @Override
+    public void moveTo(Point2D newLocation, Graphics g) {
+        move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
     }
 
     @Override
@@ -37,7 +48,11 @@ public class Circle extends Shape {
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
+        G2d.dispose();
     }
 
-    //TODO: Override "include" method
+    @Override
+    public boolean includes(Point2D point) {
+        return this.awtShape.contains(point);
+    }
 }

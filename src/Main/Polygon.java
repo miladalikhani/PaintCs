@@ -13,41 +13,67 @@ public class Polygon extends Shape {
 
     Polygon(String name, int n, Point2D location, double length, Color border, Color fill, int priority) {
         super(name, location, border, fill, priority);
-        this.N = n;
-        this.Length = length;
-        this.Radius = length / (2 * Math.sin(180 / n));
+        N = n;
+        Length = length;
+        Radius = length / (2 * Math.sin(Math.PI / n));
         xPoint = new int[n];
         yPoint = new int[n];
         for (int i = 0; i < n; i++) {
-            xPoint[i] = ((int) (this.Radius * Math.sin(360 * i / n)));
-            yPoint[i] = ((int) (this.Radius * (1 - Math.cos(360 * i / n))));
+            xPoint[i] = ((int) (Radius * Math.sin(2 * Math.PI * i / n) + location.getX()));
+            yPoint[i] = ((int) (Radius * (1 - Math.cos(2 * Math.PI * i / n)) + location.getY()));
         }
         this.awtShape = new java.awt.Polygon(xPoint, yPoint, n);
     }
 
-    int getN() { return this.N; }
+    int getN() { return N; }
 
-    double getLength() { return this.Length; }
+    double getLength() { return Length; }
 
-    void setLength(double length) { this.Length = length; }
+    void setLength(double length) { Length = length; }
 
-    double getRadius() { return this.Radius; }
+    double getRadius() { return Radius; }
 
-    void setRadius(double radius) { this.Radius = radius; }
+    void resetRadius() { Radius = Length / (2 * Math.sin(Math.PI / N)); }
 
     @Override
-    public void Move(Point2D newLocation) { //TODO: Graphics, Change xPoint & yPoint
-        this.setLocation(newLocation);
+    public void move(Point2D dR, Graphics g) {
+        this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
+        for (int i = 0; i < N; i++) {
+            xPoint[i] += dR.getX();
+            yPoint[i] += dR.getY();
+        }
+        this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
+        draw(g);
     }
 
     @Override
-    public void Scale(double k) { //TODO: Graphics, Change xPoint & yPoint
-        this.setRadius(this.getRadius() * k);
+    public void moveTo(Point2D newLocation, Graphics g) {
+        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
     }
 
     @Override
-    public void Rotate(double angle) { //TODO: Graphics, Change xPoint & yPoint
-        this.setAngle(this.getAngle() + angle);
+    public void scale(double k, Graphics g) {
+        this.setLength(this.getLength() * k);
+        this.resetRadius();
+        for (int i = 0; i < N; i++) {
+            xPoint[i] = ((int) (Radius * Math.sin(2 * Math.PI * i / N) + this.getLocation().getX()));
+            yPoint[i] = ((int) (Radius * (1 - Math.cos(2 * Math.PI * i / N)) + this.getLocation().getY()));
+        }
+        this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
+        draw(g);
+    }
+
+    @Override
+    public void rotate(double angle,Graphics g) {
+        double X, Y;
+        for (int i = 0; i < N; i++) {
+            X = xPoint[i] - this.getLocation().getX();
+            Y = yPoint[i] - this.getLocation().getY();
+            xPoint[i] = ((int) (this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180)));
+            yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
+        }
+        this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
+        draw(g);
     }
 
     @Override
@@ -61,14 +87,6 @@ public class Polygon extends Shape {
 
     @Override
     public boolean includes(Point2D point) {
-        double X1, Y1, X2, Y2;
-        for (int i = 0; i < 2; i++) {
-            X1 = xPoint[i + 1] - xPoint[i];
-            Y1 = yPoint[i + 1] - yPoint[i];
-            X2 = xPoint[i] - point.getX();
-            Y2 = yPoint[i] - point.getY();
-            if (X1 * Y2 > X2 * Y1) return false;
-        }
-        return true;
+        return this.awtShape.contains(point);
     }
 }
