@@ -9,6 +9,10 @@ public class Triangle extends Shape {
     private int[] xPoint;
     private int[] yPoint;
 
+    Triangle(String name, int x1, int y1, int x2, int y2, int x3, int y3, String borderColor, String fillColor, int priority) {
+        this(name, new Point2D.Double(x1, y1), new Point2D.Double(x2, y2), new Point2D.Double(x3, y3), Color.decode("0x" + borderColor), Color.decode("0x" + fillColor), priority);
+    }
+
     Triangle(String name, Point2D point1, Point2D point2, Point2D point3, Color border, Color fill, int priority) {
         super(name, new Point2D.Double((point1.getX() + point2.getX() + point3.getX()) / 3, (point1.getY() + point2.getY() + point3.getY()) / 3) {}, border, fill, priority);
         xPoint[0] = ((int) point1.getX());

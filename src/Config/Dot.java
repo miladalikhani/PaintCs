@@ -5,7 +5,12 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 public class Dot extends Shape {
-    Dot (String name, Point2D location, Color border, int priority) {
+
+    Dot(String name, int x, int y, String color, int priority) {
+        this(name, new Point2D.Double(x, y), Color.decode("0x" + color), priority);
+    }
+
+    Dot(String name, Point2D location, Color border, int priority) {
         super(name, location, border, null, priority);
         this.awtShape = new Line2D.Double(location, location);
     }

@@ -6,6 +6,11 @@ import java.awt.geom.Point2D;
 
 public class Line extends Shape {
     private Point2D.Double[] Point = new Point2D.Double[2];
+
+    Line(String name, int x1, int y1, int x2, int y2, String color, int priority) {
+        this(name, new Point2D.Double(x1, y1), new Point2D.Double(x2, y2), Color.decode("0x" + color), priority);
+    }
+
     Line (String name, Point2D point1, Point2D point2, Color border, int priority) {
         super (name, new Point2D.Double ((point1.getX() + point2.getX()) / 2, (point1.getY() + point2.getY()) / 2), border, null, priority);
         Point[0].setLocation(point1);
