@@ -1,51 +1,74 @@
 package Main;
 
 import java.awt.*;
+import java.awt.Polygon;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class Rectangle extends Shape {
+    private int[] xPoint;
+    private int[] yPoint;
+
     Rectangle(String name, Point2D location, double a, double b, Color border, Color fill, int priority) {
         super(name, location, border, fill, priority);
-        this.setA(a);
-        this.setB(b);
-        this.Point.add(new Point2D.Double(location.getX() - a/2, location.getY() - b/2));
-        this.Point.add(new Point2D.Double(location.getX() + a/2, location.getY() - b/2));
-        this.Point.add(new Point2D.Double(location.getX() + a/2, location.getY() + b/2));
-        this.Point.add(new Point2D.Double(location.getX() - a/2, location.getY() + b/2));
-        //add first point if we want draw rectangle with lines
-        //this.Point.add(new Point2D.Double(location.getX() - a/2, location.getX() - b/2));
+        xPoint = new int[4];
+        yPoint = new int[4];
+        xPoint[0] = ((int) (location.getX() - a / 2));
+        xPoint[1] = ((int) (location.getX() + a / 2));
+        xPoint[2] = ((int) (location.getX() + a / 2));
+        xPoint[3] = ((int) (location.getX() - a / 2));
+        yPoint[0] = ((int) (location.getY() - b / 2));
+        yPoint[1] = ((int) (location.getY() - b / 2));
+        yPoint[2] = ((int) (location.getY() + b / 2));
+        yPoint[3] = ((int) (location.getY() + b / 2));
+        this.awtShape = new Polygon(xPoint, yPoint, 4);
     }
 
     @Override
-    public void Scale(double k) {
-        for (int i = 0; i < this.Point.size(); i++) {
-            double X = this.Point.get(i).getX() - this.getLocation().getX();
-            double Y = this.Point.get(i).getY() - this.getLocation().getY();
-            X = k * X;
-            Y = k * Y;
-            this.Point.get(i).setLocation(X, Y);
+    public void scale(double k) {
+        for (int i = 0; i < 4; i++) {
+            xPoint[i] = ((int) (this.getLocation().getX() + (xPoint[i] - this.getLocation().getX()) * k));
+            yPoint[i] = ((int) (this.getLocation().getY() + (yPoint[i] - this.getLocation().getY()) * k));
         }
-        this.setA(this.getA() * k);
-        this.setB(this.getB() * k);
+        this.awtShape = new Polygon(xPoint, yPoint, 4);
     }
 
     @Override
-    public void Move(Point2D newLocation) {
-        for (int i = 0; i < this.Point.size(); i++) {
-            double X = this.Point.get(i).getX() - this.getLocation().getX();
-            double Y = this.Point.get(i).getY() - this.getLocation().getY();
-            this.Point.get(i).setLocation(X + newLocation.getX(), Y + newLocation.getY());
-        }
-        this.setLocation(newLocation);
+    public void move(Point2D dR) {
+        ((Polygon) this.awtShape).translate(((int) dR.getX()), ((int) dR.getY()));
+        xPoint = ((Polygon) this.awtShape).xpoints;
+        yPoint = ((Polygon) this.awtShape).ypoints;
+        this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
     }
 
     @Override
-    public void Rotate(double angle) {
-        this.setAngle(this.getAngle() + angle);
-        for (int i = 0; i < this.Point.size(); i++) {
-            double X = this.Point.get(i).getX() - this.getLocation().getX();
-            double Y = this.Point.get(i).getY() - this.getLocation().getY();
-            this.Point.get(i).setLocation(X * Math.cos(angle) - Y * Math.sin(angle) + this.getLocation().getX(), X * Math.sin(angle) + Y * Math.cos(angle) + this.getLocation().getY());
+    public void moveTo(Point2D newLocation) {
+        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()));
+    }
+
+    @Override
+    public void rotate(double angle) {
+        double X, Y;
+        for (int i = 0; i < 4; i++) {
+            X = xPoint[i] - this.getLocation().getX();
+            Y = yPoint[i] - this.getLocation().getY();
+            xPoint[i] = ((int) (this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180)));
+            yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
         }
+        this.awtShape = new Polygon(xPoint, yPoint, 4);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        Graphics2D G2d = ((Graphics2D) g);
+        G2d.setPaint(Fill);
+        G2d.fill(awtShape);
+        G2d.setPaint(Border);
+        G2d.draw(awtShape);
+    }
+
+    @Override
+    public boolean includes(Point2D point) {
+        return this.awtShape.contains(point);
     }
 }

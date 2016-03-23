@@ -46,30 +46,35 @@ public class Group {
 
     public void Move(double DeltaX, double DeltaY) {
         for (int i = 0; i < this.Shapes.size(); i++) {
-            this.getShape(i).Move(new Point2D.Double(DeltaX + this.getShape(i).getLocation().getX(), DeltaY + this.getShape(i).getLocation().getY()));
+            this.getShape(i).move(new Point2D.Double(DeltaX + this.getShape(i).getLocation().getX(), DeltaY + this.getShape(i).getLocation().getY()));
         }
     }
 
     public void Rotate(double angle) {
         for (int i = 0; i < this.Shapes.size(); i++) {
-            this.getShape(i).Rotate(angle);
+            this.getShape(i).rotate(angle);
         }
     }
 
     public void Scale(double k) {
         for (int i = 0; i < this.Shapes.size(); i++) {
-            this.getShape(i).Scale(k);
+            this.getShape(i).scale(k);
         }
     }
 
     public void changeBorder (Color newBorder) {
         for (int i = 0; i < this.Shapes.size(); i++)
-            this.getShape(i).ChangeBorder(newBorder);
+            this.getShape(i).changeBorder(newBorder);
     }
 
     public void changeFill (Color newColor ) {
         for (int i = 0; i < this.Shapes.size(); i++)
-            this.getShape(i).ChangeFill(newColor);
+            this.getShape(i).changeFill(newColor);
     }
 
+    public void draw(Graphics g){
+        for (int i = 0; i < Shapes.size(); i++) {
+            Shapes.get(i).draw(g);
+        }
+    }
 }
