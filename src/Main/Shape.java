@@ -42,17 +42,17 @@ public abstract class Shape implements Comparable<Shape> {
 
     public void setPriority (int priority) { Priority = priority; }
 
-    public abstract void move (Point2D dR, Graphics g);
+    public abstract void move (Point2D dR);
 
-    public abstract void moveTo (Point2D newLocation, Graphics g);
+    public abstract void moveTo (Point2D newLocation);
 
-    public abstract void scale (double k, Graphics g);
+    public abstract void scale (double k);
 
     public void changeBorder (Color newBorder) { this.setBorder(newBorder); }
 
     public void changeFill (Color newFill) { this.setFill(newFill); }
 
-    public abstract void rotate (double angle, Graphics g);
+    public abstract void rotate (double angle);
 
     public static int compare (Shape a, Shape b)
     {

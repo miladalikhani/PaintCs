@@ -14,7 +14,7 @@ public class Line extends Shape {
     }
 
     @Override
-    public void move(Point2D dR, Graphics g) {
+    public void move(Point2D dR) {
         Point[0].setLocation(Point[0].getX() + dR.getX(), Point[0].getY() + dR.getY());
         Point[1].setLocation(Point[1].getX() + dR.getX(), Point[1].getY() + dR.getY());
         this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
@@ -25,7 +25,7 @@ public class Line extends Shape {
     public void changeFill(Color newFill) {}
 
     @Override
-    public void rotate(double angle, Graphics g) {
+    public void rotate(double angle) {
         double X = Point[0].getX() - this.getLocation().getX();
         double Y = Point[0].getY() - this.getLocation().getY();
         Point[0].setLocation(this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180), this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180));
@@ -33,11 +33,10 @@ public class Line extends Shape {
         Y = Point[1].getY() - this.getLocation().getY();
         Point[1].setLocation(this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180), this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180));
         this.awtShape = new Line2D.Double(Point[0], Point[1]);
-        draw(g);
     }
 
     @Override
-    public void scale(double k, Graphics g) {
+    public void scale(double k) {
         double X = Point[0].getX() - this.getLocation().getX();
         double Y = Point[0].getY() - this.getLocation().getY();
         Point[0].setLocation(this.getLocation().getX() + X * k, this.getLocation().getY() + Y * k);
@@ -45,7 +44,6 @@ public class Line extends Shape {
         Y = Point[1].getY() - this.getLocation().getY();
         Point[1].setLocation(this.getLocation().getX() + X * k, this.getLocation().getY() + Y * k);
         this.awtShape = new Line2D.Double(Point[0], Point[1]);
-        draw(g);
     }
 
     @Override
@@ -57,8 +55,8 @@ public class Line extends Shape {
     }
 
     @Override
-    public void moveTo(Point2D newLocation, Graphics g) {
-        move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
+    public void moveTo(Point2D newLocation) {
+        move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()));
     }
 
     @Override

@@ -21,7 +21,7 @@ public class Surface extends JPanel {
     }
 
     public void addShape(Shape shape) {
-        group.add(new Group(shape.getName()+"_group", shape));
+        group.add(new Group(shape));
     }
 
     private void drawAll(Graphics g) {

@@ -23,21 +23,20 @@ public class Triangle extends Shape {
     }
 
     @Override
-    public void move(Point2D dR, Graphics g) {
+    public void move(Point2D dR) {
         ((Polygon) this.awtShape).translate(((int) dR.getX()), ((int) dR.getY()));
         xPoint = ((Polygon) this.awtShape).xpoints;
         yPoint = ((Polygon) this.awtShape).ypoints;
         this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
-        draw(g);
     }
 
     @Override
-    public void moveTo(Point2D newLocation, Graphics g) {
-        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
+    public void moveTo(Point2D newLocation) {
+        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()));
     }
 
     @Override
-    public void rotate(double angle, Graphics g) {
+    public void rotate(double angle) {
         double X, Y;
         for (int i = 0; i < 3; i++) {
             X = xPoint[i] - this.getLocation().getX();
@@ -46,17 +45,15 @@ public class Triangle extends Shape {
             yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
         }
         this.awtShape = new Polygon(xPoint, yPoint, 3);
-        draw(g);
     }
 
     @Override
-    public void scale(double k, Graphics g) {
+    public void scale(double k) {
         for (int i = 0; i < 3; i++) {
             xPoint[i] = ((int) (this.getLocation().getX() + (xPoint[i] - this.getLocation().getX()) * k));
             yPoint[i] = ((int) (this.getLocation().getY() + (yPoint[i] - this.getLocation().getY()) * k));
         }
         this.awtShape = new Polygon(xPoint, yPoint, 3);
-        draw(g);
     }
 
     @Override

@@ -8,13 +8,9 @@ import java.awt.geom.Rectangle2D;
 public class Rectangle extends Shape {
     private int[] xPoint;
     private int[] yPoint;
-    private double A, B;
 
     Rectangle(String name, Point2D location, double a, double b, Color border, Color fill, int priority) {
         super(name, location, border, fill, priority);
-        A = a;
-        B = b;
-//        this.awtShape = new java.awt.Rectangle(((int) (location.getX() - a / 2)), ((int) (location.getY() - b / 2)), ((int) a), ((int) b));
         xPoint = new int[4];
         yPoint = new int[4];
         xPoint[0] = ((int) (location.getX() - a / 2));
@@ -29,33 +25,29 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public void scale(double k, Graphics g) {
+    public void scale(double k) {
         for (int i = 0; i < 4; i++) {
             xPoint[i] = ((int) (this.getLocation().getX() + (xPoint[i] - this.getLocation().getX()) * k));
             yPoint[i] = ((int) (this.getLocation().getY() + (yPoint[i] - this.getLocation().getY()) * k));
         }
-        A *= k;
-        B *= k;
         this.awtShape = new Polygon(xPoint, yPoint, 4);
-        draw(g);
     }
 
     @Override
-    public void move(Point2D dR, Graphics g) {
+    public void move(Point2D dR) {
         ((Polygon) this.awtShape).translate(((int) dR.getX()), ((int) dR.getY()));
         xPoint = ((Polygon) this.awtShape).xpoints;
         yPoint = ((Polygon) this.awtShape).ypoints;
         this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
-        draw(g);
     }
 
     @Override
-    public void moveTo(Point2D newLocation, Graphics g) {
-        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
+    public void moveTo(Point2D newLocation) {
+        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()));
     }
 
     @Override
-    public void rotate(double angle, Graphics g) {
+    public void rotate(double angle) {
         double X, Y;
         for (int i = 0; i < 4; i++) {
             X = xPoint[i] - this.getLocation().getX();
@@ -64,7 +56,6 @@ public class Rectangle extends Shape {
             yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
         }
         this.awtShape = new Polygon(xPoint, yPoint, 4);
-        draw(g);
     }
 
     @Override

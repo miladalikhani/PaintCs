@@ -36,23 +36,22 @@ public class Polygon extends Shape {
     void resetRadius() { Radius = Length / (2 * Math.sin(Math.PI / N)); }
 
     @Override
-    public void move(Point2D dR, Graphics g) {
+    public void move(Point2D dR) {
         this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
         for (int i = 0; i < N; i++) {
             xPoint[i] += dR.getX();
             yPoint[i] += dR.getY();
         }
         this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
-        draw(g);
     }
 
     @Override
-    public void moveTo(Point2D newLocation, Graphics g) {
-        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
+    public void moveTo(Point2D newLocation) {
+        this.move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()));
     }
 
     @Override
-    public void scale(double k, Graphics g) {
+    public void scale(double k) {
         this.setLength(this.getLength() * k);
         this.resetRadius();
         for (int i = 0; i < N; i++) {
@@ -60,11 +59,10 @@ public class Polygon extends Shape {
             yPoint[i] = ((int) (Radius * (1 - Math.cos(2 * Math.PI * i / N)) + this.getLocation().getY()));
         }
         this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
-        draw(g);
     }
 
     @Override
-    public void rotate(double angle,Graphics g) {
+    public void rotate(double angle) {
         double X, Y;
         for (int i = 0; i < N; i++) {
             X = xPoint[i] - this.getLocation().getX();
@@ -73,7 +71,6 @@ public class Polygon extends Shape {
             yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
         }
         this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
-        draw(g);
     }
 
     @Override

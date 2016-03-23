@@ -14,21 +14,20 @@ public class Dot extends Shape {
     public void changeFill(Color newFill) {}
 
     @Override
-    public void move(Point2D dR, Graphics g) {
+    public void move(Point2D dR) {
         setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
         this.awtShape = new Line2D.Double(this.getLocation().getX(), this.getLocation().getY(), this.getLocation().getX(), this.getLocation().getY());
-        draw(g);
     }
 
     @Override
-    public void rotate(double angle, Graphics g) {}
+    public void rotate(double angle) {}
 
     @Override
-    public void scale(double k, Graphics g) {}
+    public void scale(double k) {}
 
     @Override
-    public void moveTo(Point2D newLocation, Graphics g) {
-        move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()), g);
+    public void moveTo(Point2D newLocation) {
+        move(new Point2D.Double(newLocation.getX() - this.getLocation().getX(), newLocation.getY() - this.getLocation().getY()));
     }
 
     @Override
