@@ -1,13 +1,24 @@
 import Validation.OperatorsHandler;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import Config.*;
 
 /**
  * Created by milad on 3/22/16.
  */
-public class Main {
+public class Main extends JFrame {
+    public Main() {
+        Surface surface = new Surface();
+        this.add(surface);
+        setTitle("PaintCS");
+        setSize(1300, 1000);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         File file = new File("input/ex1.txt");
         OperatorsHandler validator = new OperatorsHandler();
