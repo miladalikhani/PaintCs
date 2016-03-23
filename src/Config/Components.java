@@ -10,6 +10,18 @@ import java.util.Collections;
 public class Components {
     ArrayList<Group> groups = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        String answer = "" ;
+        for (int i = 0; i < getSize() ; i++) {
+            for (int j = 0; j < groups.get(i).getSize(); j++) {
+                answer += groups.get(i).getShape(j).getName() + "\n";
+            }
+
+        }
+        return answer;
+    }
+
     public int getSize()
     {
         int answer = 0 ;

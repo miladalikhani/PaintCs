@@ -14,13 +14,30 @@ public class Surface extends JPanel {
     Group Select = null;
     PaintListener listener = null;
 
+    @Override
+    public String toString() {
+        String answer = "hello\n" ;
+        for (int i = 0; i < group.size(); i++) {
+            for (int j = 0; j < group.get(i).getSize(); j++) {
+                answer += group.get(i).getShape(j).getName() + "\n";
+            }
+
+        }
+        return answer;
+    }
+
     public Surface() {
         listener = new PaintListener();
         addMouseListener(listener);
         addMouseMotionListener(listener);
     }
 
-    public void setShapes ( ArrayList<Group> shapes )
+    public void addShape( Group group)
+    {
+        this.group.add(group);
+    }
+
+    public void setShapes (ArrayList<Group> shapes )
     {
         this.group = shapes;
     }
@@ -28,13 +45,15 @@ public class Surface extends JPanel {
     private void drawAll(Graphics g) {
         Iterator<Group> it = group.iterator();
         while (it.hasNext()) {
+            System.out.printf("hello");
             it.next().draw(g);
         }
     }
 
     @Override
-    public void paintComponents(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponents(g);
+
         drawAll(g);
     }
 

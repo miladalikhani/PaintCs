@@ -30,7 +30,7 @@ public class Main extends JFrame {
 
     public static void main(String[] args) throws FileNotFoundException {
         Main main = new Main();
-        //main.setVisible(true);
+        main.setVisible(true);
         File file = new File("input/ex1.txt");
         OperatorsHandler validator = new OperatorsHandler();
         Scanner input = new Scanner(file);
@@ -127,6 +127,10 @@ public class Main extends JFrame {
                     break;
             }
         }
+        main.surface.setShapes(main.shapes.getGroups());
+        System.out.println(main.surface);
+       // main.surface.setShapes(new Group( new Line("tes" , 10 , 20 , 30 , 40 , "121314" , 1)));
+        //main.surface.repaint();
     }
     private static int readNextLine ( Scanner input , OperatorsHandler validator)
     {
