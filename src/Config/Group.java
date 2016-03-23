@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Group {
-    String name;
+    private String name;
     private ArrayList<Shape> Shapes = new ArrayList<>();
     private int size;
 
-    Group(Shape shape) {
+    public Group(Shape shape) {
         this.name = shape.getName();
         this.Shapes.add(shape);
         this.size = 1;
@@ -21,9 +21,14 @@ public class Group {
         return this.Shapes;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getSize() {
         return size;
     }
+
     public Shape getShape(int i) {
         return this.Shapes.get(i);
     }

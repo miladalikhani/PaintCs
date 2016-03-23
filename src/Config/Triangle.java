@@ -6,10 +6,10 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
 public class Triangle extends Shape {
-    private int[] xPoint;
-    private int[] yPoint;
+    private int[] xPoint = new int[3];
+    private int[] yPoint = new int[3];
 
-    Triangle(String name, int x1, int y1, int x2, int y2, int x3, int y3, String borderColor, String fillColor, int priority) {
+    public Triangle(String name, int x1, int y1, int x2, int y2, int x3, int y3, String borderColor, String fillColor, int priority) {
         this(name, new Point2D.Double(x1, y1), new Point2D.Double(x2, y2), new Point2D.Double(x3, y3), Color.decode("0x" + borderColor), Color.decode("0x" + fillColor), priority);
     }
 

@@ -8,7 +8,7 @@ public class Rectangle extends Shape {
     private int[] xPoint;
     private int[] yPoint;
 
-    Rectangle(String name, int x, int y, int a, int b, String borderColor, String fillColor, int priority) {
+    public Rectangle(String name, int x, int y, int a, int b, String borderColor, String fillColor, int priority) {
         this(name, new Point2D.Double(x, y), a, b, Color.decode("0x" + borderColor), Color.decode("0x" + fillColor), priority);
     }
 

@@ -1,5 +1,6 @@
 package Config;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -8,6 +9,24 @@ import java.util.Collections;
  */
 public class Components {
     ArrayList<Group> groups = new ArrayList<>();
+
+    public int getSize()
+    {
+        int answer = 0 ;
+        for (int i = 0; i < groups.size() ; i++) {
+            answer += groups.get(i).getSize();
+        }
+        return answer;
+    }
+
+    public Group findGroup( String name )
+    {
+        for (int i = 0; i < groups.size() ; i++) {
+            if ( groups.get(i).getName().equals(name) )
+                return groups.get(i);
+        }
+        return null;
+    }
 
     public void addGroup(Group newGroup) {
         groups.add(newGroup);
@@ -23,6 +42,13 @@ public class Components {
         }
         Collections.sort(shapes);
         return shapes;
+    }
+
+
+
+    public ArrayList<Group> getGroups()
+    {
+        return this.groups;
     }
 
     public void changePriority ( Group group , int newPriority )

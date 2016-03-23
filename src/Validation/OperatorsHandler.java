@@ -22,6 +22,11 @@ public class OperatorsHandler {
         return validateStatement();
     }
 
+    public String get ( int i )
+    {
+        return parts.get(i);
+    }
+
     private int validateStatement ()
     {
          /*

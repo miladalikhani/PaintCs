@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 public class Circle extends Shape {
     private double Radius;
 
-    Circle(String name, int x, int y, int r, String borderColor, String fillColor, int priority) {
+    public Circle(String name, int x, int y, int r, String borderColor, String fillColor, int priority) {
         this(name, new Point2D.Double(x, y), r, Color.decode("0x" + borderColor), Color.decode("0x" + fillColor), priority);
     }
 
