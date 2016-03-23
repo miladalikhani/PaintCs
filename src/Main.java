@@ -4,22 +4,21 @@ import Validation.OperatorsHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.InputMismatchException;
-import java.util.IntSummaryStatistics;
 import java.util.Scanner;
 import Config.*;
-import org.omg.CORBA.CODESET_INCOMPATIBLE;
+
 
 /**
  * Created by milad on 3/22/16.
  */
 public class Main extends JFrame {
     public Surface surface;
-    public Components shapes = new Components();
+    public Components shapes;
+
     public Main() {
+        shapes = new Components();
         surface = new Surface();
         add(surface);
         setTitle("PaintCS");
@@ -32,7 +31,6 @@ public class Main extends JFrame {
         Main main = new Main();
         File file = new File("input/ex1.txt");
         OperatorsHandler validator = new OperatorsHandler();
-        main.setVisible(true);
         Scanner input = new Scanner(file);
         int cnt = 1;
         while ( input.hasNext() ) {
@@ -128,10 +126,7 @@ public class Main extends JFrame {
             }
         }
         main.surface.setShapes(main.shapes.getGroups());
-        //main.surface.addShape(new Group( new Line( "t" , 100 , 200 ,300 ,400 ,"123456" , 1)));
-        //main.surface.addShape(new Group( new Line( "c" , 100 , 500 ,300 ,400 ,"123456" , 3)));
-        //main.surface.addShape(new Group( new Circle("b" , 300 , 500 , 100 , "236457" , "df0904" , 2)));
-        System.out.println(main.surface);
+        main.setVisible(true);
     }
     private static int readNextLine ( Scanner input , OperatorsHandler validator)
     {
