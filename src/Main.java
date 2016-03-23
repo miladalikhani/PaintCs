@@ -140,12 +140,13 @@ public class Main extends JFrame {
         Main test = new Main( main.shapes );
         test.surface.addShape(new Group( new Circle("test2" , 400, 100 ,67 , "234576" , "ff3300",2)));
         test.surface.addShape(new Group( new Circle("test" , 100,200,30,"111111" , "234567" , 1)));
-        //test.surface.setShapes(main.shapes.getGroups());
+        test.surface.setShapes(main.shapes.getGroups());
         System.out.println(main.shapes);
         System.out.println(test.surface);
         test.setVisible(true);
        // main.surface.setShapes(new Group( new Line("tes" , 10 , 20 , 30 , 40 , "121314" , 1)));
-        //main.surface.repaint();
+//        main.surface.repaint();
+        main.surface.paintAll(main.surface.getGraphics());
     }
     private static int readNextLine ( Scanner input , OperatorsHandler validator)
     {
