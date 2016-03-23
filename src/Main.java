@@ -10,8 +10,9 @@ import Config.*;
  * Created by milad on 3/22/16.
  */
 public class Main extends JFrame {
+    private Surface surface;
     public Main() {
-        Surface surface = new Surface();
+        surface = new Surface();
         this.add(surface);
         setTitle("PaintCS");
         setSize(1300, 1000);
