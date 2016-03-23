@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Surface extends JPanel {
-    ArrayList<Group> group = new ArrayList<>();
+    ArrayList<Group> group = new ArrayList<Group>() ;
     Group Select = null;
     PaintListener listener = null;
 
@@ -45,7 +45,7 @@ public class Surface extends JPanel {
     private void drawAll(Graphics g) {
         Iterator<Group> it = group.iterator();
         while (it.hasNext()) {
-            System.out.printf("hello");
+            //System.out.println(it.next().getName());
             it.next().draw(g);
         }
     }
