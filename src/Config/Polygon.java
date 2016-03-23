@@ -1,8 +1,7 @@
-package Main;
+package Config;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.lang.management.MemoryPoolMXBean;
 
 public class Polygon extends Shape {
     private int N;

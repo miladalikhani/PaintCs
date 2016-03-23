@@ -1,25 +1,35 @@
-package Main;
+package Config;
 
 import java.awt.*;
 import java.awt.Polygon;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
-public class Triangle extends Shape {
+public class Rectangle extends Shape {
     private int[] xPoint;
     private int[] yPoint;
 
-    Triangle(String name, Point2D point1, Point2D point2, Point2D point3, Color border, Color fill, int priority) {
-        super(name, new Point2D.Double((point1.getX() + point2.getX() + point3.getX()) / 3, (point1.getY() + point2.getY() + point3.getY()) / 3) {}, border, fill, priority);
-        xPoint[0] = ((int) point1.getX());
-        xPoint[1] = ((int) point2.getX());
-        xPoint[2] = ((int) point3.getX());
-        yPoint[0] = ((int) point1.getY());
-        yPoint[1] = ((int) point2.getY());
-        yPoint[2] = ((int) point3.getY());
-        this.awtShape = new GeneralPath();
-        this.awtShape = new Polygon(xPoint, yPoint, 3);
+    Rectangle(String name, Point2D location, double a, double b, Color border, Color fill, int priority) {
+        super(name, location, border, fill, priority);
+        xPoint = new int[4];
+        yPoint = new int[4];
+        xPoint[0] = ((int) (location.getX() - a / 2));
+        xPoint[1] = ((int) (location.getX() + a / 2));
+        xPoint[2] = ((int) (location.getX() + a / 2));
+        xPoint[3] = ((int) (location.getX() - a / 2));
+        yPoint[0] = ((int) (location.getY() - b / 2));
+        yPoint[1] = ((int) (location.getY() - b / 2));
+        yPoint[2] = ((int) (location.getY() + b / 2));
+        yPoint[3] = ((int) (location.getY() + b / 2));
+        this.awtShape = new Polygon(xPoint, yPoint, 4);
+    }
+
+    @Override
+    public void scale(double k) {
+        for (int i = 0; i < 4; i++) {
+            xPoint[i] = ((int) (this.getLocation().getX() + (xPoint[i] - this.getLocation().getX()) * k));
+            yPoint[i] = ((int) (this.getLocation().getY() + (yPoint[i] - this.getLocation().getY()) * k));
+        }
+        this.awtShape = new Polygon(xPoint, yPoint, 4);
     }
 
     @Override
@@ -38,22 +48,13 @@ public class Triangle extends Shape {
     @Override
     public void rotate(double angle) {
         double X, Y;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             X = xPoint[i] - this.getLocation().getX();
             Y = yPoint[i] - this.getLocation().getY();
             xPoint[i] = ((int) (this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180)));
             yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
         }
-        this.awtShape = new Polygon(xPoint, yPoint, 3);
-    }
-
-    @Override
-    public void scale(double k) {
-        for (int i = 0; i < 3; i++) {
-            xPoint[i] = ((int) (this.getLocation().getX() + (xPoint[i] - this.getLocation().getX()) * k));
-            yPoint[i] = ((int) (this.getLocation().getY() + (yPoint[i] - this.getLocation().getY()) * k));
-        }
-        this.awtShape = new Polygon(xPoint, yPoint, 3);
+        this.awtShape = new Polygon(xPoint, yPoint, 4);
     }
 
     @Override

@@ -1,4 +1,5 @@
 import Validation.OperatorsHandler;
+import Config.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
+        Components shapes = new Components();
         File file = new File("input/ex1.txt");
         OperatorsHandler validator = new OperatorsHandler();
         Scanner input = new Scanner(file);
@@ -20,18 +22,19 @@ public class Main {
             switch (thisStatus)
             {
                 case 0:
+                    System.out.println("operation is not valid");
                     break;
                 case 1:
+                    System.out.println("argumant of operation is not valid");
                     break;
                 case 2:
+                    System.out.println("Hexadecimal number is not valid");
                     break;
                 case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
+                    System.out.println("Decimal number is not valid");
                     break;
                 case 6:
+                    shapes.addGroup(new Group(new Dot()));
                     break;
                 case 7:
                     break;

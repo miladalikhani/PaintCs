@@ -1,8 +1,7 @@
-package Main;
+package Config;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 public abstract class Shape implements Comparable<Shape> {
     protected Point2D Location;

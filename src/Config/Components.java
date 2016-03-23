@@ -1,8 +1,7 @@
-package Main;
+package Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.function.UnaryOperator;
 
 /**
  * Created by milad on 3/22/16.
@@ -10,11 +9,15 @@ import java.util.function.UnaryOperator;
 public class Components {
     ArrayList<Group> groups = new ArrayList<>();
 
-    public void addGroup ( Group newGroup )
-    {
+    public void addGroup(Group newGroup) {
         groups.add(newGroup);
     }
-    
+
+    public getLastPriority()
+    {
+
+    }
+
     public ArrayList<Shape> sortedShapes ()
     {
         ArrayList<Shape> shapes = new ArrayList<>();
