@@ -26,7 +26,6 @@ public class Main extends JFrame {
         setSize(1300, 1000);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        surface.setVisible(true);
     }
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -128,6 +127,11 @@ public class Main extends JFrame {
                     break;
             }
         }
+        main.surface.setShapes(main.shapes.getGroups());
+        //main.surface.addShape(new Group( new Line( "t" , 100 , 200 ,300 ,400 ,"123456" , 1)));
+        //main.surface.addShape(new Group( new Line( "c" , 100 , 500 ,300 ,400 ,"123456" , 3)));
+        //main.surface.addShape(new Group( new Circle("b" , 300 , 500 , 100 , "236457" , "df0904" , 2)));
+        System.out.println(main.surface);
     }
     private static int readNextLine ( Scanner input , OperatorsHandler validator)
     {
