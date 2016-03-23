@@ -20,8 +20,9 @@ public class Surface extends JPanel {
         addMouseMotionListener(listener);
     }
 
-    public void addShape(Shape shape) {
-        group.add(new Group(shape));
+    public void setShapes ( ArrayList<Group> shapes )
+    {
+        this.group = shapes;
     }
 
     private void drawAll(Graphics g) {

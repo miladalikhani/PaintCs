@@ -13,11 +13,6 @@ public class Components {
         groups.add(newGroup);
     }
 
-    public getLastPriority()
-    {
-
-    }
-
     public ArrayList<Shape> sortedShapes ()
     {
         ArrayList<Shape> shapes = new ArrayList<>();
