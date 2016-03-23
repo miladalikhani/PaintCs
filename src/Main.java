@@ -10,10 +10,10 @@ import Config.*;
  * Created by milad on 3/22/16.
  */
 public class Main extends JFrame {
-    private Surface surface;
+    public Surface surface;
     public Main() {
         surface = new Surface();
-        this.add(surface);
+        add(surface);
         setTitle("PaintCS");
         setSize(1300, 1000);
         setLocationRelativeTo(null);
@@ -21,7 +21,11 @@ public class Main extends JFrame {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        File file = new File("input/ex1.txt");
+        Main main = new Main();
+        main.setVisible(true);
+
+
+        File file = new File("shape.txt");
         OperatorsHandler validator = new OperatorsHandler();
         Scanner input = new Scanner(file);
         int cnt = 1;

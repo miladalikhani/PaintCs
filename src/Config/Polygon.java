@@ -11,6 +11,10 @@ public class Polygon extends Shape {
     private int[] xPoint;
     private int[] yPoint;
 
+    Polygon(String name, int n, int x, int y, int l, String borderColor, String fillColor, int priority) {
+        this(name, n, new Point2D.Double(x, y), l, Color.decode("0x" + borderColor), Color.decode("0x" + fillColor), priority);
+    }
+
     Polygon(String name, int n, Point2D location, double length, Color border, Color fill, int priority) {
         super(name, location, border, fill, priority);
         N = n;
