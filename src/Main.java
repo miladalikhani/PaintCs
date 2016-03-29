@@ -4,6 +4,7 @@ import Validation.OperatorsHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -20,6 +21,8 @@ public class Main extends JFrame {
     public Main() {
         shapes = new Components();
         surface = new Surface();
+//        surface.setShapes(shapes.getGroups());
+//        surface.setSortedShape(shapes.sortedShapes());
         add(surface);
         setTitle("PaintCS");
         setSize(1300, 1000);
@@ -36,23 +39,22 @@ public class Main extends JFrame {
         while ( input.hasNext() ) {
             int thisStatus;
             thisStatus = readNextLine(input,validator);
-            System.out.println("Line " + (cnt++) + " : " + thisStatus);
             switch ( thisStatus)
             {
                 case 0:
-                    System.out.printf("Operation is not valid\n");
+                    System.out.printf("Operator is not valid\n");
                     break;
                 case 1:
-                    System.out.printf("argumant of this operation is not valid\n");
+                    System.out.printf("Arguments of this operation is not valid\n");
                     break;
                 case 2:
-                    System.out.printf("Hexa decimal Number is not valid\n");
+                    System.out.printf("Hexadecimal number is not valid\n");
                     break;
                 case 3:
                     System.out.printf("Decimal number is not valid\n");
                     break;
                 case 30:
-                    System.out.printf("float Point number is not valid\n");
+                    System.out.printf("Float Point number is not valid\n");
                 case 6:
                     main.shapes.addGroup(new Group( new Dot( validator.get(2) , Integer.parseInt(validator.get(3)) , Integer.parseInt(validator.get(4)) , validator.get(5) , main.shapes.getSize() + 1 )));
                     break;
@@ -126,6 +128,7 @@ public class Main extends JFrame {
             }
         }
         main.surface.setShapes(main.shapes.getGroups());
+        main.surface.setSortedShape(main.shapes.sortedShapes());
         main.setVisible(true);
     }
     private static int readNextLine ( Scanner input , OperatorsHandler validator)

@@ -9,6 +9,7 @@ public abstract class Shape implements Comparable<Shape> {
     protected Color Fill;
     protected String Name;
     protected int Priority;
+    protected boolean selected;
     protected java.awt.Shape awtShape;
 
     public Shape (String name, Point2D location, Color border, Color fill, int priority) {
@@ -40,6 +41,12 @@ public abstract class Shape implements Comparable<Shape> {
     public int getPriority () { return Priority; }
 
     public void setPriority (int priority) { Priority = priority; }
+
+    public boolean isSelected() { return selected; }
+
+    public void select() { selected = true; }
+
+    public void unSelect() { selected = false; }
 
     public abstract void move (Point2D dR);
 

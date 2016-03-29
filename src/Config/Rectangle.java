@@ -30,8 +30,8 @@ public class Rectangle extends Shape {
     @Override
     public void scale(double k) {
         for (int i = 0; i < 4; i++) {
-            xPoint[i] = ((int) (this.getLocation().getX() + (xPoint[i] - this.getLocation().getX()) * k));
-            yPoint[i] = ((int) (this.getLocation().getY() + (yPoint[i] - this.getLocation().getY()) * k));
+            xPoint[i] = ((int) ((xPoint[i] - this.getLocation().getX()) * k + this.getLocation().getX()));
+            yPoint[i] = ((int) ((yPoint[i] - this.getLocation().getY()) * k + this.getLocation().getY()));
         }
         this.awtShape = new Polygon(xPoint, yPoint, 4);
     }

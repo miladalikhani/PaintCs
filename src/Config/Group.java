@@ -51,7 +51,7 @@ public class Group {
 
     public void Move(double DeltaX, double DeltaY) {
         for (int i = 0; i < this.Shapes.size(); i++) {
-            this.getShape(i).move(new Point2D.Double(DeltaX + this.getShape(i).getLocation().getX(), DeltaY + this.getShape(i).getLocation().getY()));
+            this.getShape(i).move(new Point2D.Double(DeltaX, DeltaY));
         }
     }
 

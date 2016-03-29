@@ -86,4 +86,8 @@ public class Components {
             biggerShape.get(i).setPriority(cnt++);
         }
     }
+
+    public void remove (int i) {
+        groups.remove(i);
+    }
 }

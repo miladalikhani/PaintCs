@@ -2,6 +2,7 @@ package Config;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Surface extends JPanel {
-    ArrayList<Group> group = new ArrayList<Group>() ;
+    ArrayList<Group> group = new ArrayList<Group>();
+    ArrayList<Config.Shape> sortedShape = new ArrayList<>();
     Group Select = null;
     PaintListener listener = null;
 
@@ -32,15 +34,17 @@ public class Surface extends JPanel {
         addMouseMotionListener(listener);
     }
 
-    public void addShape( Group group)
+    public void addShape(Group group)
     {
         this.group.add(group);
     }
 
     public void setShapes (ArrayList<Group> shapes )
     {
-        this.group = shapes;
+        group = shapes;
     }
+
+    public void setSortedShape (ArrayList<Config.Shape> sorted) { sortedShape = sorted; }
 
     private void drawAll(Graphics g) {
         Iterator<Group> it = group.iterator();
@@ -52,13 +56,13 @@ public class Surface extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponents(g);
+        super.paintComponent(g);
 
         drawAll(g);
     }
 
     class PaintListener implements MouseListener, MouseMotionListener {
-        java.awt.Point pMouse = null;
+        java.awt.Point pMouse = new Point();
 
         public Point2D getPMouse() { return new Point2D.Double(pMouse.getX(), pMouse.getY()); }
 
@@ -74,7 +78,44 @@ public class Surface extends JPanel {
             }
             else {
                 if (e.isControlDown()) {
-
+                    for (int i = sortedShape.size() - 1; i >= 0; i--) {
+                        if (sortedShape.get(i).includes(this.getPMouse())) {
+                            if (sortedShape.get(i).isSelected()) {
+                                for (int j = 0; j < Select.getSize(); j++) {
+                                    if (Select.getShape(j).equals(sortedShape.get(i)))
+                                        Select.deleteShape(sortedShape.get(i));
+                                }
+                                sortedShape.get(i).unSelect();
+                            } else {
+                                Select = new Group(sortedShape.get(i));
+                                sortedShape.get(i).select();
+                            }
+                            break;
+                        }
+                    }
+                }
+                else {
+                    boolean flag = false;
+                    for (int i = sortedShape.size() - 1; i >= 0; i--) {
+                        if (sortedShape.get(i).includes(this.getPMouse())) {
+                            if (!sortedShape.get(i).isSelected()) {
+                                if (Select != null)
+                                    for (int j = 0; j < Select.getSize(); j++) {
+                                        Select.getShape(j).unSelect();
+                                    }
+                                Select = new Group(sortedShape.get(i));
+                            }
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag)
+                        if (Select != null) {
+                            for (int i = 0; i < Select.getSize(); i++) {
+                                Select.getShape(i).unSelect();
+                            }
+                            Select = null;
+                        }
                 }
             }
         }
@@ -96,7 +137,12 @@ public class Surface extends JPanel {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-
+            Point cur = new Point(e.getPoint());
+            Point dif = new Point(cur.x - pMouse.x, cur.y - pMouse.y);
+            pMouse.setLocation(cur);
+            if (Select == null) return;
+            Select.Move(dif.x, dif.y);
+            repaint();
         }
 
         @Override

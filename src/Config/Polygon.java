@@ -58,8 +58,8 @@ public class Polygon extends Shape {
         this.setLength(this.getLength() * k);
         this.resetRadius();
         for (int i = 0; i < N; i++) {
-            xPoint[i] = ((int) (Radius * Math.sin(2 * Math.PI * i / N) + this.getLocation().getX()));
-            yPoint[i] = ((int) (Radius * (1 - Math.cos(2 * Math.PI * i / N)) + this.getLocation().getY()));
+            xPoint[i] = ((int) ((xPoint[i] - this.getLocation().getX()) * k + this.getLocation().getX()));
+            yPoint[i] = ((int) ((yPoint[i] - this.getLocation().getY()) * k + this.getLocation().getY()));
         }
         this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
     }
