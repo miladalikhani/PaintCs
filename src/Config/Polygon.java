@@ -82,6 +82,7 @@ public class Polygon extends Shape {
         G2d.setPaint(Fill);
         G2d.fill(awtShape);
         G2d.setPaint(Border);
+        G2d.draw(awtShape);
     }
 
     @Override

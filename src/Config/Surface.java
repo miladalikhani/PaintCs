@@ -47,7 +47,7 @@ public class Surface extends JPanel {
     public void setSortedShape (ArrayList<Config.Shape> sorted) { sortedShape = sorted; }
 
     private void drawAll(Graphics g) {
-        Iterator<Group> it = group.iterator();
+        Iterator<Config.Shape> it = sortedShape.iterator();
         while (it.hasNext()) {
             //System.out.println(it.next().getName());
             it.next().draw(g);
@@ -81,13 +81,10 @@ public class Surface extends JPanel {
                     for (int i = sortedShape.size() - 1; i >= 0; i--) {
                         if (sortedShape.get(i).includes(this.getPMouse())) {
                             if (sortedShape.get(i).isSelected()) {
-                                for (int j = 0; j < Select.getSize(); j++) {
-                                    if (Select.getShape(j).equals(sortedShape.get(i)))
-                                        Select.deleteShape(sortedShape.get(i));
-                                }
+                                Select.deleteShape(sortedShape.get(i));
                                 sortedShape.get(i).unSelect();
                             } else {
-                                Select = new Group(sortedShape.get(i));
+                                Select.addShape(sortedShape.get(i));
                                 sortedShape.get(i).select();
                             }
                             break;
@@ -99,11 +96,16 @@ public class Surface extends JPanel {
                     for (int i = sortedShape.size() - 1; i >= 0; i--) {
                         if (sortedShape.get(i).includes(this.getPMouse())) {
                             if (!sortedShape.get(i).isSelected()) {
-                                if (Select != null)
-                                    for (int j = 0; j < Select.getSize(); j++) {
-                                        Select.getShape(j).unSelect();
+                                if (Select == null) {
+                                    Select = new Group(sortedShape.get(i));
+                                    sortedShape.get(i).select();
+                                }
+                                else {
+                                    if (!sortedShape.get(i).isSelected()) {
+                                        Select = new Group(sortedShape.get(i));
+                                        sortedShape.get(i).select();
                                     }
-                                Select = new Group(sortedShape.get(i));
+                                }
                             }
                             flag = true;
                             break;
