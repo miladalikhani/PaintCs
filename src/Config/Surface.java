@@ -146,7 +146,7 @@ public class Surface extends JPanel {
             Point cur = new Point(e.getPoint());
             Point dif = new Point(cur.x - pMouse.x, cur.y - pMouse.y);
             pMouse.setLocation(cur);
-            if (Select == null) return;
+            if (Select == null || SwingUtilities.isRightMouseButton(e)) return;
             Select.Move(dif.x, dif.y);
             repaint();
         }
