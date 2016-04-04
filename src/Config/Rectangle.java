@@ -68,6 +68,10 @@ public class Rectangle extends Shape {
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
+        if(selected) {
+            G2d.setPaint(Color.BLACK);
+            G2d.draw(awtShape.getBounds2D());
+        }
     }
 
     @Override

@@ -102,6 +102,9 @@ public class Surface extends JPanel {
                                 }
                                 else {
                                     if (!sortedShape.get(i).isSelected()) {
+                                        for (int j = 0; j < Select.getSize(); j++) {
+                                            Select.getShape(j).unSelect();
+                                        }
                                         Select = new Group(sortedShape.get(i));
                                         sortedShape.get(i).select();
                                     }
@@ -120,6 +123,7 @@ public class Surface extends JPanel {
                         }
                 }
             }
+            repaint();
         }
 
         @Override

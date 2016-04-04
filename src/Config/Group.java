@@ -45,7 +45,12 @@ public class Group {
 
     public void deleteShape (Shape shape)
     {
-        this.Shapes.remove(shape);
+        for (int i = 0; i < size; i++) {
+            if (Shapes.get(i) == shape) {
+                Shapes.remove(i);
+                break;
+            }
+        }
         size--;
     }
 
