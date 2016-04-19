@@ -1,8 +1,7 @@
 package Config;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
 public class Line extends Shape {
     private Point2D.Double[] Point = new Point2D.Double[2];

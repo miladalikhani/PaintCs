@@ -1,8 +1,7 @@
 package Config;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
 public class Circle extends Shape {
     private double Radius;
@@ -43,12 +42,15 @@ public class Circle extends Shape {
 
     @Override
     public void draw(Graphics g) {
+//        System.out.println(getName());
         Graphics2D G2d = ((Graphics2D) g);
+        G2d.setStroke(new BasicStroke(2));
         G2d.setPaint(Fill);
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
         if(selected) {
+            G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
             G2d.setPaint(Color.BLACK);
             G2d.draw(awtShape.getBounds2D());
         }

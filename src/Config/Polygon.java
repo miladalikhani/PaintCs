@@ -1,38 +1,47 @@
 package Config;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
 public class Polygon extends Shape {
     private int N;
     private double Length;
     private double Radius;
-    private int[] xPoint;
-    private int[] yPoint;
+    private double[] xPoint;
+    private double[] yPoint;
+    private double rotateAngle = 0;
 
     public Polygon(String name, int n, int x, int y, int l, String borderColor, String fillColor, int priority) {
         this(name, n, new Point2D.Double(x, y), l, Color.decode("0x" + borderColor), Color.decode("0x" + fillColor), priority);
     }
 
-    Polygon(String name, int n, Point2D location, double length, Color border, Color fill, int priority) {
+    public Polygon(String name, int n, Point2D location, double length, Color border, Color fill, int priority) {
         super(name, location, border, fill, priority);
         N = n;
         Length = length;
-        Radius = length / (2 * Math.sin(Math.PI / n));
-        xPoint = new int[n];
-        yPoint = new int[n];
+        Radius = Math.abs(length) / (2 * Math.sin(Math.PI / n));
+        xPoint = new double[n];
+        yPoint = new double[n];
         for (int i = 0; i < n; i++) {
             xPoint[i] = ((int) (Radius * Math.sin(2 * Math.PI * i / n) + location.getX()));
-            yPoint[i] = ((int) (Radius * (1 - Math.cos(2 * Math.PI * i / n)) + location.getY()));
+            yPoint[i] = ((int) (Radius * Math.cos(2 * Math.PI * i / n) + location.getY()));
         }
-        this.awtShape = new java.awt.Polygon(xPoint, yPoint, n);
+        int[] x = new int[n];
+        int[] y = new int[n];
+        for (int i = 0; i < n; i++) {
+            x[i] = ((int) xPoint[i]);
+            y[i] = ((int) yPoint[i]);
+        }
+        this.awtShape = new java.awt.Polygon(x, y, n);
     }
 
     int getN() { return N; }
 
     double getLength() { return Length; }
 
-    void setLength(double length) { Length = length; }
+    void setRadius(double radius) {
+        scale(Math.abs(radius) / Radius);
+    }
 
     double getRadius() { return Radius; }
 
@@ -40,12 +49,18 @@ public class Polygon extends Shape {
 
     @Override
     public void move(Point2D dR) {
-        this.setLocation(new Point2D.Double(this.getLocation().getX() + dR.getX(), this.getLocation().getY() + dR.getY()));
         for (int i = 0; i < N; i++) {
             xPoint[i] += dR.getX();
             yPoint[i] += dR.getY();
         }
-        this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
+        int[] x = new int[N];
+        int[] y = new int[N];
+        for (int i = 0; i < N; i++) {
+            x[i] = ((int) xPoint[i]);
+            y[i] = ((int) yPoint[i]);
+        }
+        awtShape = new java.awt.Polygon(x, y, N);
+        setLocation(new Point2D.Double(getLocation().getX() + dR.getX(), getLocation().getY() + dR.getY()));
     }
 
     @Override
@@ -55,35 +70,54 @@ public class Polygon extends Shape {
 
     @Override
     public void scale(double k) {
-        this.setLength(this.getLength() * k);
-        this.resetRadius();
         for (int i = 0; i < N; i++) {
-            xPoint[i] = ((int) ((xPoint[i] - this.getLocation().getX()) * k + this.getLocation().getX()));
-            yPoint[i] = ((int) ((yPoint[i] - this.getLocation().getY()) * k + this.getLocation().getY()));
+            xPoint[i] = (xPoint[i] - this.getLocation().getX()) * k + this.getLocation().getX();
+            yPoint[i] = (yPoint[i] - this.getLocation().getY()) * k + this.getLocation().getY();
         }
-        this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
+        int[] x = new int[N];
+        int[] y = new int[N];
+        for (int i = 0; i < N; i++) {
+            x[i] = ((int) xPoint[i]);
+            y[i] = ((int) yPoint[i]);
+        }
+        Length *= k;
+        resetRadius();
+        this.awtShape = new java.awt.Polygon(x, y, N);
     }
 
     @Override
     public void rotate(double angle) {
+        rotateAngle += angle;
         double X, Y;
         for (int i = 0; i < N; i++) {
             X = xPoint[i] - this.getLocation().getX();
             Y = yPoint[i] - this.getLocation().getY();
-            xPoint[i] = ((int) (this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180)));
-            yPoint[i] = ((int) (this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
+            xPoint[i] = this.getLocation().getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180);
+            yPoint[i] = this.getLocation().getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180);
         }
-        this.awtShape = new java.awt.Polygon(xPoint, yPoint, N);
+        int[] x = new int[N];
+        int[] y = new int[N];
+        for (int i = 0; i < N; i++) {
+            x[i] = ((int) xPoint[i]);
+            y[i] = ((int) yPoint[i]);
+        }
+        this.awtShape = new java.awt.Polygon(x, y, N);
+    }
+
+    public void rotateTo(double angle) {
+        rotate(angle - rotateAngle);
     }
 
     @Override
     public void draw(Graphics g) {
         Graphics2D G2d = ((Graphics2D) g);
+        G2d.setStroke(new BasicStroke(2));
         G2d.setPaint(Fill);
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
         if(selected) {
+            G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
             G2d.setPaint(Color.BLACK);
             G2d.draw(awtShape.getBounds2D());
         }

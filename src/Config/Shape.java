@@ -1,7 +1,7 @@
 package Config;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
 public abstract class Shape implements Comparable<Shape> {
     protected Point2D Location;
@@ -15,8 +15,8 @@ public abstract class Shape implements Comparable<Shape> {
     public Shape (String name, Point2D location, Color border, Color fill, int priority) {
         Name = name;
         Location = location;
-        Border = border;
-        Fill = fill;
+        Border = new Color(border.getRGB());
+        Fill = new Color(fill.getRGB());
         Priority = priority;
     }
 
