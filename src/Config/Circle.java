@@ -49,15 +49,16 @@ public class Circle extends Shape {
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
-        if(selected) {
-            G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
-            G2d.setPaint(Color.BLACK);
-            G2d.draw(awtShape.getBounds2D());
-        }
     }
 
     @Override
     public boolean includes(Point2D point) {
         return this.awtShape.contains(point);
+    }
+
+    @Override
+    public Circle clone() {
+        Circle tmp = new Circle(this.getName() + "_copy", this.getLocation(), this.getRadius(), this.getBorder(), this.getFill(), this.getPriority());
+        return tmp;
     }
 }

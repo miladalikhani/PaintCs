@@ -66,4 +66,9 @@ public class Line extends Shape {
     public boolean includes(Point2D point) {
         return Point[0].distance(point) + Point[1].distance(point) <= 3;
     }
+
+    @Override
+    public Line clone() {
+        return new Line(this.getName() + "_copy", this.Point[0], this.Point[1], this.getBorder(), this.getPriority());
+    }
 }

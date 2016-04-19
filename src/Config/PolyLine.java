@@ -99,11 +99,6 @@ public class PolyLine extends Shape {
         for (int i = 0; i < lines.size(); i++) {
             G2d.draw(lines.get(i));
         }
-        if (selected) {
-            G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
-            G2d.setPaint(Color.BLACK);
-            G2d.draw(new Rectangle2D.Double(topLeft.getX(), topLeft.getY(), bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY()));
-        }
     }
 
     @Override
@@ -119,5 +114,14 @@ public class PolyLine extends Shape {
             if (r <= 3 && topLeft.getX() - 3 <= point.getX() && point.getX() <= bottomRight.getX() + 3 && topLeft.getY() - 3 <= point.getY() && point.getY() <= bottomRight.getY() + 3) return  true;
         }
         return false;
+    }
+
+    @Override
+    public PolyLine clone() {
+        PolyLine tmp = new PolyLine(this.getName() + "_copy", points.get(0), this.getBorder(), this.getFill(), this.getPriority());
+        for (int i = 1; i < pointNumber(); i++) {
+            tmp.addPoint(points.get(i));
+        }
+        return tmp;
     }
 }

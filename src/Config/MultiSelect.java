@@ -3,12 +3,13 @@ package Config;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MultiSelect {
+public class MultiSelect implements Cloneable {
     private String name;
     private ArrayList<Group> Groups = new ArrayList<>();
-    private int size;
+    private int size = 0;
 
     public MultiSelect(Group group) {
+        if (group == null) return;
         this.name = group.getName();
         this.Groups.add(group);
         this.size = 1;
@@ -83,5 +84,15 @@ public class MultiSelect {
         for (int i = 0; i < Groups.size(); i++) {
             Groups.get(i).draw(g);
         }
+    }
+
+    @Override
+    public MultiSelect clone() {
+        if (size == 0) return new MultiSelect(null);
+        MultiSelect tmp = new MultiSelect(null);
+        for (int i = 0; i < size; i++) {
+            tmp.addGroup(this.getGroup(i).clone());
+        }
+        return tmp;
     }
 }

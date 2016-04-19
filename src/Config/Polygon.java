@@ -47,6 +47,18 @@ public class Polygon extends Shape {
 
     void resetRadius() { Radius = Length / (2 * Math.sin(Math.PI / N)); }
 
+    public void setxPoint(double[] xPoint) {
+        for (int i = 0; i < xPoint.length; i++) {
+            this.xPoint[i] = xPoint[i];
+        }
+    }
+
+    public void setyPoint(double[] yPoint) {
+        for (int i = 0; i < yPoint.length; i++) {
+            this.yPoint[i] = yPoint[i];
+        }
+    }
+
     @Override
     public void move(Point2D dR) {
         for (int i = 0; i < N; i++) {
@@ -116,15 +128,18 @@ public class Polygon extends Shape {
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
-        if(selected) {
-            G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
-            G2d.setPaint(Color.BLACK);
-            G2d.draw(awtShape.getBounds2D());
-        }
     }
 
     @Override
     public boolean includes(Point2D point) {
         return this.awtShape.contains(point);
+    }
+
+    @Override
+    public Polygon clone() {
+        Polygon tmp = new Polygon(this.getName() + "_copy", N, this.getLocation(), this.getLength(), this.getBorder(), this.getFill(), this.getPriority());
+        tmp.setxPoint(this.xPoint);
+        tmp.setyPoint(this.yPoint);
+        return tmp;
     }
 }

@@ -45,4 +45,9 @@ public class Dot extends Shape {
     public boolean includes(Point2D point) {
         return this.getLocation().distance(point) <= 3;
     }
+
+    @Override
+    public Dot clone() {
+        return new Dot(this.getName() + "_copy", this.getLocation(), this.getBorder(), this.getPriority());
+    }
 }

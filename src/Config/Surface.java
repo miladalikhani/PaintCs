@@ -10,6 +10,7 @@ public class Surface extends JPanel {
     ArrayList<Group> group = new ArrayList<Group>();
     ArrayList<Config.Shape> sortedShape = new ArrayList<>();
     MultiSelect Select = null;
+    MultiSelect clipBoard = null;
     public ArrayList<Integer> keyPressed = new ArrayList<>();
     public int buttonCode;
     public Color borderColor = null;
@@ -22,10 +23,27 @@ public class Surface extends JPanel {
         addKeyListener(listener);
     }
 
-    public void addShape(Config.Shape shape)
-    {
+    public void addShape(Shape shape) {
         this.group.add(new Group(shape));
         this.sortedShape.add(shape);
+    }
+
+    public void removeGroup(Group grp) {
+        for (int i = 0; i < group.size(); i++) {
+            if (group.get(i) == grp) {
+                group.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < grp.getSize(); i++) {
+            for (int j = 0; j < sortedShape.size(); j++) {
+                if (sortedShape.get(j) == grp.getShape(i)) {
+                    sortedShape.remove(j);
+                    break;
+                }
+            }
+        }
+        repaint();
     }
 
     public void setShapes (ArrayList<Group> shapes )
@@ -38,6 +56,7 @@ public class Surface extends JPanel {
     private void drawAll(Graphics g) {
         for (int i = 0; i < sortedShape.size(); i++) {
             sortedShape.get(i).draw(g);
+            searchGroup(sortedShape.get(i)).drawSelect(g);
         }
     }
 
@@ -345,6 +364,82 @@ public class Surface extends JPanel {
         @Override
         public void keyPressed(KeyEvent e) {
             addKeyPressed(e.getKeyCode());
+            switch (keyPressed.size()) {
+                case 1:
+                    switch (keyPressed.get(0)) {
+                        case KeyEvent.VK_DELETE:
+                            if (Select == null) break;
+                            for (int i = 0; i < Select.getSize(); i++) {
+                                removeGroup(Select.getGroup(i));
+                            }
+                            repaint();
+                            break;
+                        case KeyEvent.VK_ESCAPE:
+                            if (Select != null) {
+                                for (int i = 0; i < Select.getSize(); i++) {
+                                    Select.getGroup(i).unSelect();
+                                }
+                                Select = null;
+                                repaint();
+                            }
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (keyPressed.get(0)) {
+                        case KeyEvent.VK_CONTROL:
+                            switch (keyPressed.get(1)) {
+                                case KeyEvent.VK_A:
+                                    if (group.size() == 0) break;
+                                    Select = new MultiSelect(group.get(0));
+                                    group.get(0).select();
+                                    for (int i = 1; i < group.size(); i++) {
+                                        Select.addGroup(group.get(i));
+                                        group.get(i).select();
+                                    }
+                                    repaint();
+                                    break;
+                                case KeyEvent.VK_C:
+                                    if (Select == null) break;
+                                    clipBoard = Select.clone();
+                                    break;
+                                case KeyEvent.VK_G:
+                                    if (Select.getSize() == 1) {
+                                        for (int i = 0; i < Select.getGroup(0).getSize(); i++) {
+                                            group.add(new Group(Select.getGroup(0).getShape(i)));
+                                            Select.addGroup(group.get(group.size() - 1));
+                                        }
+                                        for (int i = 0; i < group.size(); i++) {
+                                            if (group.get(i) == Select.getGroup(0)) {
+                                                group.remove(i);
+                                                break;
+                                            }
+                                        }
+                                        Select.deleteGroup(Select.getGroup(0));
+                                        repaint();
+                                    }
+                                    else {
+                                        Group tmp = new Group(null);
+                                        for (int i = 0; i < Select.getSize(); i++) {
+                                            for (int j = 0; j < Select.getGroup(i).getSize(); j++) {
+                                                tmp.addShape(Select.getGroup(i).getShape(j));
+                                            }
+                                            for (int i1 = 0; i1 < group.size(); i1++) {
+                                                if (group.get(i1) == Select.getGroup(i)) {
+                                                    group.remove(i1);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        Select = new MultiSelect(tmp);
+                                        group.add(tmp);
+                                        repaint();
+                                    }
+                                    break;
+                            }
+                    }
+
+            }
         }
 
         @Override

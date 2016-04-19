@@ -1,5 +1,6 @@
 package Config;
 
+import javax.xml.xpath.XPath;
 import java.awt.*;
 import java.awt.Polygon;
 import java.awt.geom.*;
@@ -31,6 +32,20 @@ public class Rectangle extends Shape {
             y[i] = ((int) yPoint[i]);
         }
         this.awtShape = new Polygon(x, y, 4);
+    }
+
+    public void setxPoints(double x1, double x2, double x3, double x4) {
+        xPoint[0] = x1;
+        xPoint[1] = x2;
+        xPoint[2] = x3;
+        xPoint[3] = x4;
+    }
+
+    public void setyPoints(double y1, double y2, double y3, double y4) {
+        yPoint[0] = y1;
+        yPoint[1] = y2;
+        yPoint[2] = y3;
+        yPoint[3] = y4;
     }
 
     @Override
@@ -95,11 +110,6 @@ public class Rectangle extends Shape {
         G2d.fill(awtShape);
         G2d.setPaint(Border);
         G2d.draw(awtShape);
-        if(selected) {
-            G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
-            G2d.setPaint(Color.BLACK);
-            G2d.draw(awtShape.getBounds2D());
-        }
     }
 
     public void setWidth(int width) {
@@ -133,5 +143,13 @@ public class Rectangle extends Shape {
     @Override
     public boolean includes(Point2D point) {
         return this.awtShape.contains(point);
+    }
+
+    @Override
+    public Rectangle clone() {
+        Rectangle tmp = new Rectangle(this.getName() + "_copy", this.getLocation(), 0, 0, this.getBorder(), this.getFill(), this.getPriority());
+        tmp.setxPoints(xPoint[0], xPoint[1], xPoint[2], xPoint[3]);
+        tmp.setyPoints(yPoint[0], yPoint[1], yPoint[2], yPoint[3]);
+        return tmp;
     }
 }

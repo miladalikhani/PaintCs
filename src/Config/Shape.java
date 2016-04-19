@@ -3,8 +3,8 @@ package Config;
 import java.awt.*;
 import java.awt.geom.*;
 
-public abstract class Shape implements Comparable<Shape> {
-    protected Point2D Location;
+public abstract class Shape implements Comparable<Shape>, Cloneable {
+    protected Point2D Location = new Point2D.Double();
     protected Color Border;
     protected Color Fill;
     protected String Name;
@@ -14,7 +14,7 @@ public abstract class Shape implements Comparable<Shape> {
 
     public Shape (String name, Point2D location, Color border, Color fill, int priority) {
         Name = name;
-        Location = location;
+        Location.setLocation(location);
         Border = new Color(border.getRGB());
         Fill = new Color(fill.getRGB());
         Priority = priority;
@@ -77,4 +77,7 @@ public abstract class Shape implements Comparable<Shape> {
     public abstract void draw(Graphics g);
 
     public boolean includes(Point2D point) { return false; }
+
+    @Override
+    public abstract Shape clone();
 }

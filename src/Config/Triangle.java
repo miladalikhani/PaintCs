@@ -93,11 +93,16 @@ public class Triangle extends Shape {
         G2d.draw(awtShape);
         G2d.setPaint(Color.BLACK);
         G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
-        if (selected) G2d.draw(awtShape.getBounds2D());
     }
 
     @Override
     public boolean includes(Point2D point) {
         return this.awtShape.contains(point);
+    }
+
+    @Override
+    public Triangle clone() {
+        Triangle tmp = new Triangle(this.getName() + "_copy", new Point2D.Double(xPoint[0], yPoint[0]), new Point2D.Double(xPoint[1], yPoint[1]), new Point2D.Double(xPoint[2], yPoint[2]), this.getBorder(), this.getFill(), this.getPriority());
+        return tmp;
     }
 }
