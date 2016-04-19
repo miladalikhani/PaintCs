@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Surface extends JPanel {
     ArrayList<Group> group = new ArrayList<Group>();
@@ -436,6 +437,26 @@ public class Surface extends JPanel {
                                         repaint();
                                     }
                                     break;
+                                case KeyEvent.VK_V:
+                                    if (clipBoard == null) break;
+                                    for (int i = 0; i < Select.getSize(); i++) {
+                                        Select.getGroup(i).unSelect();
+                                    }
+                                    clipBoard.Move(20, 20);
+                                    Select = clipBoard.clone();
+                                    for (int i = 0; i < Select.getSize(); i++) {
+                                        Select.getGroup(i).select();
+                                    }
+                                    int p = sortedShape.get(sortedShape.size() - 1).getPriority();
+                                    for (int i = 0; i < Select.getSize(); i++) {
+                                        for (int j = 0; j < Select.getGroup(i).getSize(); j++) {
+                                            sortedShape.add(Select.getGroup(i).getShape(j));
+                                            sortedShape.get(sortedShape.size() - 1).setPriority(p + sortedShape.get(sortedShape.size() - 1).getPriority());
+                                        }
+                                        group.add(Select.getGroup(i));
+                                    }
+                                    Collections.sort(sortedShape);
+                                    repaint();
                             }
                     }
 
