@@ -3,9 +3,10 @@ package Config;
 import java.awt.*;
 import java.awt.Rectangle;
 import java.awt.geom.*;
+import java.io.Serializable;
 import java.util.*;
 
-public class Group implements Cloneable {
+public class Group implements Cloneable, Serializable {
     private String name;
     private ArrayList<Shape> Shapes = new ArrayList<>();
     private int size = 0;
@@ -72,11 +73,19 @@ public class Group implements Cloneable {
         resetLocation();
     }
 
+    public void sort() {
+        Collections.sort(Shapes);
+    }
+
     public void Move(double DeltaX, double DeltaY) {
         for (int i = 0; i < this.Shapes.size(); i++) {
             this.getShape(i).move(new Point2D.Double(DeltaX, DeltaY));
         }
         resetLocation();
+    }
+
+    public void MoveTo(int x, int y) {
+        Move(x - getLocation().getX(), y - getLocation().getY());
     }
 
     public void Rotate(double angle) {
@@ -147,6 +156,7 @@ public class Group implements Cloneable {
     @Override
     public Group clone() {
         Group tmp = new Group(null);
+        tmp.changeName(name + "_copy");
         for (int i = 0; i < size; i++) {
             tmp.addShape(this.getShape(i).clone());
         }

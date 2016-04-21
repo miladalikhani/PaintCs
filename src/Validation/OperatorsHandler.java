@@ -22,6 +22,10 @@ public class OperatorsHandler {
         return parts.get(i);
     }
 
+    public int size() {
+        return parts.size();
+    }
+
     private int validateStatement () {
          /*
             0 -> operation error
@@ -118,7 +122,7 @@ public class OperatorsHandler {
                     return 1;
                 case "changeBorder":
                     if (parts.size() == 3) {
-                        if ( !isHex(parts.get(2)) )
+                        if (!isHex(parts.get(2)))
                             return 2;
                         return 28;
                     }
@@ -132,7 +136,7 @@ public class OperatorsHandler {
                     return 1;
                 case "priority":
                     if (parts.size() == 3) {
-                        if ( !isInteger(parts.get(2)) )
+                        if (!isInteger(parts.get(2)))
                             return 3;
                         return 31;
                     }

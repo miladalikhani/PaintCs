@@ -3,8 +3,9 @@ package Config;
 import java.awt.*;
 import java.awt.Rectangle;
 import java.awt.geom.*;
+import java.io.Serializable;
 
-public abstract class Shape implements Comparable<Shape>, Cloneable {
+public abstract class Shape implements Comparable<Shape>, Cloneable, Serializable {
     protected Point2D Location = new Point2D.Double();
     protected Color Border;
     protected Color Fill;
@@ -17,7 +18,8 @@ public abstract class Shape implements Comparable<Shape>, Cloneable {
         Name = name;
         Location.setLocation(location);
         Border = new Color(border.getRGB());
-        Fill = new Color(fill.getRGB());
+        if (fill != null) Fill = new Color(fill.getRGB());
+        else Fill = null;
         Priority = priority;
     }
 
