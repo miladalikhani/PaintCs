@@ -148,12 +148,13 @@ public class Main extends JFrame {
                 main.surface.buttonCode = main.keyPanel.buttonCode;
                 main.surface.borderColor = main.keyPanel.borderColor;
                 main.surface.fillColor = main.keyPanel.fillColor;
-
+                main.surface.polygon_n = main.keyPanel.polygon_n;
                 main.surface.requestFocus();
             }
         });
         timer.start();
-
+//        String test = JOptionPane.showInputDialog("enter a string");
+//        System.out.println(test);
         main.setVisible(true);
     }
 

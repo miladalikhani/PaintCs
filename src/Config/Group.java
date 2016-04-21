@@ -85,7 +85,7 @@ public class Group implements Cloneable {
             double X, Y;
             X = getShape(i).getLocation().getX() - this.getLocation().getX();
             Y = getShape(i).getLocation().getY() - this.getLocation().getY();
-            getShape(i).moveTo(new Point2D.Double(location.getX() + X * Math.cos(angle) + Y * Math.sin(angle), location.getY() - X * Math.sin(angle) + Y * Math.cos(angle)));
+            getShape(i).moveTo(new Point2D.Double(location.getX() + X * Math.cos(angle * Math.PI / 180) + Y * Math.sin(angle * Math.PI / 180), location.getY() - X * Math.sin(angle * Math.PI / 180) + Y * Math.cos(angle * Math.PI / 180)));
         }
         resetLocation();
     }
@@ -96,6 +96,7 @@ public class Group implements Cloneable {
             double X, Y;
             X = getShape(i).getLocation().getX() - this.getLocation().getX();
             Y = getShape(i).getLocation().getY() - this.getLocation().getY();
+            getShape(i).moveTo(new Point2D.Double(location.getX() + X * k, location.getY() + Y * k));
         }
     }
 
@@ -126,10 +127,10 @@ public class Group implements Cloneable {
         Graphics2D G2d = ((Graphics2D) g);
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, maxX = 0, maxY = 0;
         for (int i = 0; i < Shapes.size(); i++) {
-            minX = Math.min(Shapes.get(i).getAwtShape().getBounds().x, minX);
-            minY = Math.min(Shapes.get(i).getAwtShape().getBounds().y, minY);
-            maxX = Math.max(Shapes.get(i).getAwtShape().getBounds().x + Shapes.get(i).getAwtShape().getBounds().width, maxX);
-            maxY = Math.max(Shapes.get(i).getAwtShape().getBounds().y + Shapes.get(i).getAwtShape().getBounds().height, maxY);
+            minX = Math.min(Shapes.get(i).getBounds().x, minX);
+            minY = Math.min(Shapes.get(i).getBounds().y, minY);
+            maxX = Math.max(Shapes.get(i).getBounds().x + Shapes.get(i).getBounds().width, maxX);
+            maxY = Math.max(Shapes.get(i).getBounds().y + Shapes.get(i).getBounds().height, maxY);
         }
         G2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {3, 3}, 0));
         G2d.setPaint(Color.BLACK);

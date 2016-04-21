@@ -11,6 +11,7 @@ public class KeyPanel extends JPanel{
     public Color fillColor = Color.WHITE;
     private ArrayList<JButton> buttons = new ArrayList<>();
     public int buttonCode;
+    public int polygon_n = 5;
 
     public KeyPanel() {
         JButton hand = new JButton();
@@ -77,6 +78,17 @@ public class KeyPanel extends JPanel{
                 }
             });
         }
+
+        polygon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    polygon_n = Integer.parseInt(JOptionPane.showInputDialog("Enter number of vertices"));
+                } catch (NumberFormatException | NullPointerException ex) {
+                    return;
+                }
+            }
+        });
 
         borderColorButton.setToolTipText("Border Color");
         borderColorButton.setBackground(Color.BLACK);

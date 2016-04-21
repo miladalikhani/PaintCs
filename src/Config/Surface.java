@@ -16,6 +16,7 @@ public class Surface extends JPanel {
     public int buttonCode;
     public Color borderColor = null;
     public Color fillColor = null;
+    public int polygon_n;
 
     public Surface() {
         PaintListener listener = new PaintListener();
@@ -201,7 +202,7 @@ public class Surface extends JPanel {
                 case 0:
                     if (keyPressed.size() == 1 && keyPressed.get(0) == KeyEvent.VK_R) {
                         Point cur = new Point(e.getPoint());
-                        if (Select == null || SwingUtilities.isRightMouseButton(e)) return;
+                        if (Select == null || SwingUtilities.isRightMouseButton(e)) break;
                         if (curGroup == null) {
                             for (int i = sortedShape.size() - 1; i >= 0; i--) {
                                 if (sortedShape.get(i).includes(this.getPMouse()))
@@ -216,7 +217,7 @@ public class Surface extends JPanel {
                     }
                     if (keyPressed.size() == 1 && keyPressed.get(0) == KeyEvent.VK_S) {
                         Point cur = new Point(e.getPoint());
-                        if (Select == null || SwingUtilities.isRightMouseButton(e)) return;
+                        if (Select == null || SwingUtilities.isRightMouseButton(e)) break;
                         if (curGroup == null) {
                             for (int i = sortedShape.size() - 1; i >= 0; i--) {
                                 if (sortedShape.get(i).includes(this.getPMouse()))
@@ -233,12 +234,13 @@ public class Surface extends JPanel {
                         Point cur = new Point(e.getPoint());
                         Point dif = new Point(cur.x - pMouse.x, cur.y - pMouse.y);
                         pMouse.setLocation(cur);
-                        if (Select == null || SwingUtilities.isRightMouseButton(e)) return;
+                        if (Select == null || SwingUtilities.isRightMouseButton(e)) break;
                         Select.Move(dif.x, dif.y);
                     }
                     repaint();
                     break;
                 case 1:
+                    if (SwingUtilities.isRightMouseButton(e)) break;
                     if (Select != null) {
                         for (int i = 0; i < Select.getSize(); i++) {
                             Select.getGroup(i).unSelect();
@@ -265,6 +267,7 @@ public class Surface extends JPanel {
                     }
                     break;
                 case 2:
+                    if (SwingUtilities.isRightMouseButton(e)) break;
                     if (Select != null) {
                         for (int i = 0; i < Select.getSize(); i++) {
                             Select.getGroup(i).unSelect();
@@ -295,6 +298,7 @@ public class Surface extends JPanel {
                 case 3:
                     break;
                 case 4:
+                    if (SwingUtilities.isRightMouseButton(e)) break;
                     if (Select != null) {
                         for (int i = 0; i < Select.getSize(); i++) {
                             Select.getGroup(i).unSelect();
@@ -307,7 +311,7 @@ public class Surface extends JPanel {
                         pMouse = e.getPoint();
                         int x = drag.x;
                         int y = drag.y;
-                        drawShape = new Polygon(nameGenerator(), 5, new Point2D.Double(x, y), 100.0, borderColor, fillColor, sortedShape.size());
+                        drawShape = new Polygon(nameGenerator(), polygon_n, new Point2D.Double(x, y), 100.0, borderColor, fillColor, sortedShape.size());
                         ((Polygon) drawShape).setRadius(1);
                         addShape(drawShape);
                         repaint();
@@ -325,6 +329,7 @@ public class Surface extends JPanel {
                     }
                     break;
                 case 5:
+                    if (SwingUtilities.isRightMouseButton(e)) break;
                     if (Select != null) {
                         for (int i = 0; i < Select.getSize(); i++) {
                             Select.getGroup(i).unSelect();
@@ -384,6 +389,27 @@ public class Surface extends JPanel {
                                 repaint();
                             }
                             break;
+                        case KeyEvent.VK_RIGHT:
+                            if (Select == null) break;
+                            Select.Move(2, 0);
+                            repaint();
+                            break;
+                        case KeyEvent.VK_LEFT:
+                            if (Select == null) break;
+                            Select.Move(-2, 0);
+                            repaint();
+                            break;
+                        case KeyEvent.VK_UP:
+                            if (Select == null) break;
+                            Select.Move(0, -2);
+                            repaint();
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            if (Select == null) break;
+                            Select.Move(0, 2);
+                            repaint();
+                            break;
+
                     }
                     break;
                 case 2:
@@ -457,7 +483,29 @@ public class Surface extends JPanel {
                                     }
                                     Collections.sort(sortedShape);
                                     repaint();
+                                    break;
+                                case KeyEvent.VK_LEFT:
+                                    if (Select == null) break;
+                                    Select.Rotate(1);
+                                    repaint();
+                                    break;
+                                case KeyEvent.VK_RIGHT:
+                                    if (Select == null) break;
+                                    Select.Rotate(-1);
+                                    repaint();
+                                    break;
+                                case KeyEvent.VK_UP:
+                                    if (Select == null) break;
+                                    Select.Scale(1.01);
+                                    repaint();
+                                    break;
+                                case KeyEvent.VK_DOWN:
+                                    if (Select == null) break;
+                                    Select.Scale(0.99);
+                                    repaint();
+                                    break;
                             }
+                            break;
                     }
 
             }

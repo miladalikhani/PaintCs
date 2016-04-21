@@ -1,6 +1,7 @@
 package Config;
 
 import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.*;
 
 public abstract class Shape implements Comparable<Shape>, Cloneable {
@@ -80,4 +81,8 @@ public abstract class Shape implements Comparable<Shape>, Cloneable {
 
     @Override
     public abstract Shape clone();
+
+    public Rectangle getBounds() {
+        return awtShape.getBounds();
+    }
 }

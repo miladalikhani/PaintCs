@@ -1,6 +1,7 @@
 package Config;
 
 import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class PolyLine extends Shape {
 
     public void addPoint (Point2D point) {
         points.add(point);
-        lines.add(new Line2D.Double(points.get(points.size() - 1), point));
+        lines.add(new Line2D.Double(points.get(points.size() - 2), point));
         double maxX = 0, maxY = 0;
         double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
         for (int i = 0; i < points.size(); i++) {
@@ -123,5 +124,10 @@ public class PolyLine extends Shape {
             tmp.addPoint(points.get(i));
         }
         return tmp;
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(((int) topLeft.getX()), ((int) topLeft.getY()), ((int) (bottomRight.getX() - topLeft.getX())), ((int) (bottomRight.getY() - topLeft.getY())));
     }
 }
