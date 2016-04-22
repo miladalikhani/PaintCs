@@ -2,19 +2,20 @@ package Config;
 
 import Validation.OperatorsHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class Surface extends JPanel {
-    ArrayList<Group> group = new ArrayList<Group>();
+    ArrayList<Group> group = new ArrayList<>();
     ArrayList<Config.Shape> sortedShape = new ArrayList<>();
     MultiSelect Select = null;
     MultiSelect clipBoard = null;
@@ -23,11 +24,12 @@ public class Surface extends JPanel {
     public Color borderColor = null;
     public Color fillColor = null;
     public int polygon_n;
-    File openFile = null;
-    File saveFile = null;
+    public File openFile = null;
+    public File saveFile = null;
+    public boolean saved = true;
 
     public Surface() {
-        PaintListener listener = new PaintListener();
+        PaintListener listener = new PaintListener(this);
         addMouseListener(listener);
         addMouseMotionListener(listener);
         addKeyListener(listener);
@@ -67,6 +69,7 @@ public class Surface extends JPanel {
         for (int i = 0; i < sortedShape.size(); i++) {
             sortedShape.get(i).draw(g);
             searchGroup(sortedShape.get(i)).drawSelect(g);
+            saved = false;;
         }
     }
 
@@ -465,12 +468,124 @@ public class Surface extends JPanel {
         return "Shape " + (sortedShape.size() + 1);
     }
 
+    public void save() {
+        if (saveFile == null) saveAs();
+        else {
+            try {
+                saveFile.delete();
+                saveFile.createNewFile();
+                ObjectOutputStream out = null;
+                out = new ObjectOutputStream(new FileOutputStream(saveFile));
+                out.writeObject(sortedShape);
+                out.writeObject(group);
+                out.flush();
+                out.close();
+            } catch (IOException ignored) {}
+        }
+    }
+
+    public void saveAs() {
+        JFileChooser save = new JFileChooser();
+        save.setFileFilter(new FileNameExtensionFilter("Vector File (.MDF)", "mdf"));
+        save.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        if (save.showSaveDialog(null) == JFileChooser.APPROVE_OPTION && save.getSelectedFile() != null) {
+            saveFile = save.getSelectedFile();
+            try {
+                saveFile.createNewFile();
+            } catch (IOException ignored) {
+            }
+            ObjectOutputStream out = null;
+            try {
+                out = new ObjectOutputStream(new FileOutputStream(saveFile));
+                out.writeObject(sortedShape);
+                out.writeObject(group);
+                out.flush();
+                out.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    public void exportImage() {
+        try {
+            BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_BGR);
+            this.paint(image.getGraphics());
+            JFileChooser save = new JFileChooser();
+            save.setCurrentDirectory(new File(System.getProperty("user.dir")));
+            save.setDialogTitle("Image Save");
+            save.setFileFilter(new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()));
+            save.setMultiSelectionEnabled(false);
+            if (save.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                saveFile = save.getSelectedFile();
+                ImageIO.write(image, saveFile.getName().substring(saveFile.getName().length() - 3), saveFile);
+            }
+        } catch (IOException ignored) {}
+    }
+
+    public void open() {
+        openFile = null;
+        JFileChooser open = new JFileChooser();
+        open.setFileFilter(new FileNameExtensionFilter("Code", "TXT", "MDF"));
+        open.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        open.setDialogTitle("Image Load");
+        open.setMultiSelectionEnabled(false);
+        if (open.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            openFile = open.getSelectedFile();
+            if (openFile.getName().substring(openFile.getName().length() - 3).equals("txt")) {
+                try {
+                    loadTextFile(openFile);
+                } catch (FileNotFoundException ignored) {
+                }
+            } else if (openFile.getName().substring(openFile.getName().length() - 3).equals("mdf")) {
+                try {
+                    ObjectInputStream in = new ObjectInputStream(new FileInputStream(openFile));
+                    sortedShape = (ArrayList<Shape>) in.readObject();
+                    group = (ArrayList<Group>) in.readObject();
+                    repaint();
+                    saved = true;
+                    saveFile = new File(openFile.getAbsolutePath());
+                } catch (IOException | ClassNotFoundException ignored) {}
+            }
+        }
+    }
+
+    public void paste() {
+        if (clipBoard == null) return;
+        if (Select != null) {
+            for (int i = 0; i < Select.getSize(); i++) {
+                Select.getGroup(i).unSelect();
+            }
+            Select = null;
+        }
+        clipBoard.Move(20, 20);
+        Select = clipBoard.clone();
+        for (int i = 0; i < Select.getSize(); i++) {
+            Select.getGroup(i).select();
+        }
+        int p = sortedShape.get(sortedShape.size() - 1).getPriority();
+        for (int i = 0; i < Select.getSize(); i++) {
+            for (int j = 0; j < Select.getGroup(i).getSize(); j++) {
+                sortedShape.add(Select.getGroup(i).getShape(j));
+                sortedShape.get(sortedShape.size() - 1).setPriority(p + sortedShape.get(sortedShape.size() - 1).getPriority());
+            }
+            group.add(Select.getGroup(i));
+        }
+        Collections.sort(sortedShape);
+        repaint();
+    }
+
     class PaintListener implements MouseListener, MouseMotionListener, KeyListener, FocusListener {
         java.awt.Point pMouse = new Point();
         Group curGroup = null;
         Point drag = null;
         Config.Shape drawShape = null;
         boolean drawing = false;
+        Surface parent = null;
+
+        public PaintListener(Surface surface) {
+            parent = surface;
+        }
 
         public Point2D getPMouse() { return new Point2D.Double(pMouse.getX(), pMouse.getY()); }
 
@@ -496,7 +611,7 @@ public class Surface extends JPanel {
                     repaint();
                 }
             }
-            if (buttonCode != 0) return;
+            if (buttonCode != 0 && buttonCode != 6) return;
             if (e.isControlDown()) {
                 if (Select != null) {
                     for (int i = sortedShape.size() - 1; i >= 0; i--) {
@@ -545,6 +660,10 @@ public class Surface extends JPanel {
                     }
             }
             repaint();
+            if (buttonCode == 6) {
+                if (Select == null) return;
+                Select.changeFill(fillColor);
+            }
         }
 
         @Override
@@ -777,7 +896,9 @@ public class Surface extends JPanel {
                             Select.Move(0, 2);
                             repaint();
                             break;
-
+                        case KeyEvent.VK_F9:
+                            exportImage();
+                            break;
                     }
                     break;
                 case 2:
@@ -832,80 +953,15 @@ public class Surface extends JPanel {
                                     }
                                     break;
                                 case KeyEvent.VK_O:
-                                    openFile = null;
-                                    JFileChooser open = new JFileChooser();
-                                    open.addChoosableFileFilter(new FileNameExtensionFilter(null, "TXT", "MDF"));
-                                    if (open.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-                                        openFile = open.getSelectedFile();
-                                    if (openFile.getName().substring(openFile.getName().length() - 3).equals("txt")) {
-                                        try {
-                                            loadTextFile(openFile);
-                                        } catch (FileNotFoundException ignored) {}
-                                    }
-                                    else if (openFile.getName().substring(openFile.getName().length() - 3).equals("mdf")){
-                                        try {
-                                            ObjectInputStream in = new ObjectInputStream(new FileInputStream(openFile));
-                                            sortedShape = (ArrayList<Shape>) in.readObject();
-                                            group = (ArrayList<Group>) in.readObject();
-                                            repaint();
-                                        } catch (IOException | ClassNotFoundException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                    }
+                                    open();
                                     break;
                                 case KeyEvent.VK_S:
-                                    if (saveFile == null) {
-                                        JFileChooser save = new JFileChooser();
-                                        save.addChoosableFileFilter(new FileFilter() {
-                                            @Override
-                                            public boolean accept(File f) {
-                                                return f.getName().substring(f.getName().length() - 3).equals("mdf");
-                                            }
-
-                                            @Override
-                                            public String getDescription() {
-                                                return null;
-                                            }
-                                        });
-                                        if (save.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
-                                            saveFile = save.getSelectedFile();
-                                        try {
-                                            saveFile.createNewFile();
-                                        } catch (IOException ignored) {}
-                                        ObjectOutputStream out = null;
-                                        try {
-                                            out = new ObjectOutputStream(new FileOutputStream(saveFile));
-                                            out.writeObject(sortedShape);
-                                            out.writeObject(group);
-                                            out.flush();
-                                            out.close();
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
+                                    if (!saved) {
+                                        save();
                                     }
+                                    break;
                                 case KeyEvent.VK_V:
-                                    if (clipBoard == null) break;
-                                    if (Select != null) {
-                                        for (int i = 0; i < Select.getSize(); i++) {
-                                            Select.getGroup(i).unSelect();
-                                        }
-                                        Select = null;
-                                    }
-                                    clipBoard.Move(20, 20);
-                                    Select = clipBoard.clone();
-                                    for (int i = 0; i < Select.getSize(); i++) {
-                                        Select.getGroup(i).select();
-                                    }
-                                    int p = sortedShape.get(sortedShape.size() - 1).getPriority();
-                                    for (int i = 0; i < Select.getSize(); i++) {
-                                        for (int j = 0; j < Select.getGroup(i).getSize(); j++) {
-                                            sortedShape.add(Select.getGroup(i).getShape(j));
-                                            sortedShape.get(sortedShape.size() - 1).setPriority(p + sortedShape.get(sortedShape.size() - 1).getPriority());
-                                        }
-                                        group.add(Select.getGroup(i));
-                                    }
-                                    Collections.sort(sortedShape);
-                                    repaint();
+                                    paste();
                                     break;
                                 case KeyEvent.VK_LEFT:
                                     if (Select == null) break;

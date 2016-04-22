@@ -26,6 +26,8 @@ public class KeyPanel extends JPanel{
         buttons.add(polygon);
         JButton pencil = new JButton();
         buttons.add(pencil);
+        JButton bucket = new JButton();
+        buttons.add(bucket);
         JButton borderColorButton = new JButton();
         JButton fillColorButton = new JButton();
 
@@ -64,6 +66,12 @@ public class KeyPanel extends JPanel{
         pencil.setPreferredSize(new Dimension(40, 40));
         pencil.setSelectedIcon(new ImageIcon(getClass().getResource("pencil_select.png")));
         pencil.setVisible(true);
+
+        bucket.setToolTipText("Bucket");
+        bucket.setIcon(new ImageIcon(getClass().getResource("bucket.png")));
+        bucket.setPreferredSize(new Dimension(40, 40));
+        bucket.setSelectedIcon(new ImageIcon(getClass().getResource("bucket_select.png")));
+        bucket.setVisible(true);
 
         for (int i = 0; i < buttons.size(); i++) {
             final int k = i;
@@ -123,6 +131,7 @@ public class KeyPanel extends JPanel{
         this.add(line);
         this.add(polygon);
         this.add(pencil);
+        this.add(bucket);
         this.add(borderColorButton);
         this.add(fillColorButton);
     }
